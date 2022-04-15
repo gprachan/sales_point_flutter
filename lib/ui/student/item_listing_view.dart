@@ -194,6 +194,7 @@ class _BookItem extends StatelessWidget {
                 isSelected ? Icons.check_box : Icons.check_box_outline_blank_sharp,
                 color: isSelected ? AppColors.primaryColor : Colors.grey,
               ),
+              subtitle: Text('Price Rs ${item.price}'),
             ),
             const Divider(height: 0),
           ],
