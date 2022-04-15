@@ -139,10 +139,11 @@ class ItemListingView extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         CustomButton(
-                            onClick: () {
-                              _onGenerateBill(context, schoolController);
-                            },
-                            label: 'Generate Bill'),
+                          onClick: () {
+                            _onGenerateBill(context, schoolController);
+                          },
+                          label: 'Generate Bill',
+                        ),
                       ],
                     ),
                   ),

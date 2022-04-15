@@ -27,6 +27,38 @@ class AlertUtils {
     _alertDialogBuilder();
   }
 
+  static void showCancelDialog(context, title, message, positiveButtonText, {Function? onClick}) {
+    Future<void> _alertDialogBuilder() async {
+      return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onClick?.call();
+                },
+                child: Text(positiveButtonText),
+              )
+            ],
+          );
+        },
+      );
+    }
+
+    _alertDialogBuilder();
+  }
+
   static void showSnackBar(context, message) {
     SnackBar snackBar = SnackBar(
       content: Text(message),

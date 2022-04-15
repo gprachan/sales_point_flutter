@@ -16,8 +16,7 @@ class NetworkConfig {
   static Map<String, String> headersWith() {
     var headers = _httpHeaders;
     if (_prefs.accessToken.isNotEmpty) {
-      // headers[_keyAccessTokenHeader] = _prefs.accessToken;
-      headers['Authorization'] = 'Bearer ${_prefs.accessToken}';
+      headers[_keyAccessTokenHeader] = _prefs.accessToken;
     }
     return headers;
   }

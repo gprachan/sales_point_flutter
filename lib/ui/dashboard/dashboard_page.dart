@@ -5,6 +5,7 @@ import 'package:salespoint_flutter/theme/colors.dart';
 import 'package:salespoint_flutter/ui/book_listing/book_listing_page.dart';
 import 'package:salespoint_flutter/ui/login/login_page.dart';
 import 'package:salespoint_flutter/ui/school/school_listing_page.dart';
+import 'package:salespoint_flutter/utils/alert_utils.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -18,11 +19,23 @@ class DashboardPage extends StatelessWidget {
         appBar: AppBar(
           actions: [
             IconButton(
-                onPressed: () {
-                  getIt<Prefs>().logout();
-                  Navigator.pushReplacementNamed(context, LoginPage.routeName);
-                },
-                icon: const Icon(Icons.person)),
+              onPressed: () {
+                AlertUtils.showCancelDialog(
+                  context,
+                  'Logout',
+                  'Do you want to log out?',
+                  'Log out',
+                  onClick: () async {
+                    await getIt<Prefs>().logout();
+                    Navigator.pushReplacementNamed(context, LoginPage.routeName);
+                  },
+                );
+              },
+              icon: const Icon(
+                Icons.login,
+                color: AppColors.primaryColor,
+              ),
+            ),
           ],
           title: const Text(
             'Transactions',
