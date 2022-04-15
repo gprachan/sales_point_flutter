@@ -71,6 +71,10 @@ class SchoolController extends ChangeNotifier {
 
   List<ItemListData> get mySelectedItems => _mySelectedItems;
 
+  int _totalPrice = 0;
+
+  int get totalPrice => _totalPrice;
+
   void updateData(ItemListData data) {
     // description, price, discount_amount, quality, totalAmount, discountPercent
     BillGenerateItem item = BillGenerateItem(
@@ -78,9 +82,9 @@ class SchoolController extends ChangeNotifier {
       name: data.name,
       quantity: 1,
       description: '',
-      price: 20,
-      discountAmount: 0,
-      totalAmount: 20,
+      price: data.price,
+      discountAmount: data.discountAmount,
+      totalAmount: data.price,
       discountPercent: 0,
     );
     if (_mySelectedItems.contains(data)) {
@@ -92,6 +96,14 @@ class SchoolController extends ChangeNotifier {
     }
     _selectedItems = _selectedItems;
     _mySelectedItems = _mySelectedItems;
+    notifyListeners();
+    _calculatePrice();
+  }
+
+  void _calculatePrice() {
+    for (var element in _mySelectedItems) {
+      _totalPrice += element.price ?? 0;
+    }
     notifyListeners();
   }
 }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -11,7 +10,7 @@ import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/models/request/create_bill_request.dart';
 import 'package:salespoint_flutter/models/response/create_bill_response.dart';
-import 'package:salespoint_flutter/models/response/student_listing_response.dart';
+import 'package:salespoint_flutter/theme/colors.dart';
 import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
 import 'package:salespoint_flutter/ui/school/school_controller.dart';
 
@@ -28,11 +27,9 @@ class ItemListingView extends StatelessWidget {
   }) : super(key: key);
 
   static const routeName = 'routeNameItemListingView';
-  final _formKey = GlobalKey<FormState>();
   final _prefs = getIt<Prefs>();
   final _api = getIt<AppApiClient>();
   final Map<String, dynamic>? data;
-  final totalController = TextEditingController();
 
   void _onGenerateBill(
     BuildContext context,
@@ -40,35 +37,31 @@ class ItemListingView extends StatelessWidget {
   ) async {
     AlertUtils.showProgressDialog(context);
     try {
-      if (_formKey.currentState!.validate()) {
-        CreateBillRequest request = CreateBillRequest(
-          totalAmount: int.tryParse(totalController.text),
-          totalQuantity: 1,
-          orderDate: DateTime.now().toString(),
-          schoolId: data?['schoolId'],
-          gradeId: data?['gradeId'],
-          studentId: data?['studentId'],
-          two: 5,
-          fullName: data?['studentName'],
-          salesPointId: _prefs.salesPointId,
-          studentAddressId: data?['addressId'],
-          billItems: controller.selectedItems,
-          deliveryType: 'express',
-        );
+      CreateBillRequest request = CreateBillRequest(
+        totalAmount: controller.totalPrice,
+        totalQuantity: 1,
+        orderDate: DateTime.now().toString(),
+        schoolId: data?['schoolId'],
+        gradeId: data?['gradeId'],
+        studentId: data?['studentId'],
+        two: 5,
+        fullName: data?['studentName'],
+        salesPointId: _prefs.salesPointId,
+        studentAddressId: data?['addressId'],
+        billItems: controller.selectedItems,
+        deliveryType: 'express',
+      );
 
-        var response = await doTryCatch(() async {
-          HttpResponse<CreateBillResponse> response = await _api.generateBill(request);
-          return response.handleResponse();
-        });
-        Navigator.pop(context);
-        if (response.errorMessage == null) {
-          Fluttertoast.showToast(msg: 'Bill Generated!');
-          Navigator.pushNamedAndRemoveUntil(context, DashboardPage.routeName, (route) => false);
-        } else {
-          Fluttertoast.showToast(msg: response.errorMessage ?? 'Something went wrong try again!');
-        }
+      var response = await doTryCatch(() async {
+        HttpResponse<CreateBillResponse> response = await _api.generateBill(request);
+        return response.handleResponse();
+      });
+      Navigator.pop(context);
+      if (response.errorMessage == null) {
+        Fluttertoast.showToast(msg: 'Bill Generated!');
+        Navigator.pushNamedAndRemoveUntil(context, DashboardPage.routeName, (route) => false);
       } else {
-        Navigator.pop(context);
+        Fluttertoast.showToast(msg: response.errorMessage ?? 'Something went wrong try again!');
       }
     } catch (e) {
       Navigator.pop(context);
@@ -117,25 +110,18 @@ class ItemListingView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                     child: Column(
                       children: [
-                        Form(
-                          key: _formKey,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          child: TextFormField(
-                            controller: totalController,
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                              hintText: 'Enter total amount',
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'Total Price Rs. ${schoolController.totalPrice}',
+                            prefixIcon: const Icon(Icons.money),
+                            hintStyle: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty == true) {
-                                return 'Total is required!';
-                              }
-                              if (int.tryParse(value.toString()) == null) {
-                                return 'Invalid price!';
-                              }
-                              return null;
-                            },
                           ),
+                          enabled: false,
                         ),
                         const SizedBox(height: 16),
                         CustomButton(
@@ -199,12 +185,15 @@ class _BookItem extends StatelessWidget {
         onClick(item);
       },
       child: Container(
-        color: isSelected ? const Color(0xffc6efff) : Colors.transparent,
+        color: /*isSelected ? const Color(0xffc6efff) :*/ Colors.transparent,
         child: Column(
           children: [
             ListTile(
               title: Text('${item.name}'),
-              trailing: Icon(isSelected ? Icons.check_box : Icons.check_box_outline_blank_sharp),
+              trailing: Icon(
+                isSelected ? Icons.check_box : Icons.check_box_outline_blank_sharp,
+                color: isSelected ? AppColors.primaryColor : Colors.grey,
+              ),
             ),
             const Divider(height: 0),
           ],

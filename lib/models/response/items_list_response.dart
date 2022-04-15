@@ -32,8 +32,20 @@ class ItemListData {
   String? sale;
   @JsonKey(name: 'featured_image')
   String? featuredImage;
+  @JsonKey(name: 'price')
+  int? price;
+  @JsonKey(name: 'discount_amount')
+  int? discountAmount;
 
-  ItemListData({this.id, this.name, this.quantity, this.type, this.sale, this.featuredImage});
+  ItemListData({
+    this.id,
+    this.name,
+    this.quantity,
+    this.type,
+    this.sale,
+    this.featuredImage,
+    this.price,
+  });
 
   factory ItemListData.fromJson(Map<String, dynamic> json) => _$ItemListDataFromJson(json);
 

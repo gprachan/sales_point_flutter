@@ -29,7 +29,8 @@ ItemListData _$ItemListDataFromJson(Map<String, dynamic> json) => ItemListData(
       type: json['type'] as String?,
       sale: json['sale'] as String?,
       featuredImage: json['featured_image'] as String?,
-    );
+      price: json['price'] as int?,
+    )..discountAmount = json['discount_amount'] as int?;
 
 Map<String, dynamic> _$ItemListDataToJson(ItemListData instance) =>
     <String, dynamic>{
@@ -39,4 +40,6 @@ Map<String, dynamic> _$ItemListDataToJson(ItemListData instance) =>
       'type': instance.type,
       'sale': instance.sale,
       'featured_image': instance.featuredImage,
+      'price': instance.price,
+      'discount_amount': instance.discountAmount,
     };
