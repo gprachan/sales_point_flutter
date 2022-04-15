@@ -39,11 +39,12 @@ class _LoginPageState extends State<LoginPage> {
         email: emailController.text,
         password: passwordController.text,
       );
-      var response = await ApiProvider.post(ApiProvider.loginApi, request.toJson());
+      var response = await ApiProvider.post(ApiProvider.loginApi, jsonEncode(request));
       if (response.status == ResponseWrapper.COMPLETED) {
         Navigator.pop(context);
         LoginResponse? loginResponse = LoginResponse.fromJson(response.data);
         _prefs.accessToken = loginResponse.accessToken;
+        loggerE("Prefs Token ${_prefs.accessToken}\nResponse Token ${loginResponse.accessToken}");
         _prefs.loginData = loginResponse;
         Navigator.pushReplacementNamed(context, DashboardPage.routeName);
       } else {

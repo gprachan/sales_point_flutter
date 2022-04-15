@@ -5,7 +5,7 @@ part 'return_items_request.g.dart';
 @JsonSerializable(ignoreUnannotated: false)
 class ReturnItemsRequest {
   @JsonKey(name: 'return_date')
-  String? returnDate = DateTime.now().toString();
+  String? returnDate;
   @JsonKey(name: 'return_items_details')
   List<ReturnItemsDetail>? returnItemsDetails;
 

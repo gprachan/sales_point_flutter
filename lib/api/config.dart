@@ -8,14 +8,16 @@ class NetworkConfig {
   static const _keyAccessTokenHeader = 'Authorization';
 
   static final Map<String, String> _httpHeaders = {
-    //HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
-    // HttpHeaders.acceptHeader: 'application/json',
+    HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
+    HttpHeaders.acceptHeader: 'application/json',
+    // 'Content-Type': 'application/json'
   };
 
-  static Map<String, String>? headersWith() {
+  static Map<String, String> headersWith() {
     var headers = _httpHeaders;
     if (_prefs.accessToken.isNotEmpty) {
-      headers[_keyAccessTokenHeader] = _prefs.accessToken;
+      // headers[_keyAccessTokenHeader] = _prefs.accessToken;
+      headers['Authorization'] = 'Bearer ${_prefs.accessToken}';
     }
     return headers;
   }

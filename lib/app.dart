@@ -1,7 +1,9 @@
+import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/routes/route_generator.dart';
+import 'package:salespoint_flutter/service/navigation_service.dart';
 import 'package:salespoint_flutter/theme/colors.dart';
 import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
 import 'package:salespoint_flutter/ui/login/login_page.dart';
@@ -23,9 +25,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sales Point',
+      navigatorKey: getIt<NavigationService>().navigatorKey,
       theme: ThemeData(
         primaryColor: AppColors.primaryColor,
         scaffoldBackgroundColor: const Color(0xfff8f0d4),
+        appBarTheme: const AppBarTheme(
+          backgroundColor:  Color(0xfff8f0d4)
+        ),
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.0),

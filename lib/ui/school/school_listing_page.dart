@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:salespoint_flutter/models/response/school_listing_response.dart';
+import 'package:salespoint_flutter/ui/school/school_controller.dart';
+
+class SchoolListingPage extends StatelessWidget {
+  const SchoolListingPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<SchoolController>(
+      builder: (context, controller, child) {
+        var items = controller.schools ?? [];
+        if (items.isNotEmpty) {
+          return ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+            itemCount: items.length,
+            itemBuilder: (BuildContext context, int index) {
+              var data = items[index];
+              return Card(
+                child: ExpansionTile(
+                  key: PageStorageKey<SchoolListingResponse>(data),
+                  title: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    title: Text('${data.name}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    subtitle: Text('\n${data.address}\n${data.contactNo}'),
+                  ),
+                  children: data.grades!.map((e) => ListTile(title: Text('${e.gradeName}'))).toList(),
+                ),
+              );
+            },
+          );
+        }
+        if (controller.error != null) {
+          return Center(child: Text(controller.error!));
+        }
+        return const Center(child: CircularProgressIndicator.adaptive());
+      },
+    );
+  }
+}

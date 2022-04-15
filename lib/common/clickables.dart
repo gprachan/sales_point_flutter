@@ -9,22 +9,24 @@ class ClickableText extends StatelessWidget {
   }) : super(key: key);
 
   final String label;
-  final Function onClick;
+  final Function? onClick;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        onClick();
-      },
+      onTap: onClick == null
+          ? null
+          : () {
+              onClick?.call();
+            },
       radius: 16,
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: color,
+          color: onClick == null ? Colors.grey : color,
         ),
         child: Text(
           label,

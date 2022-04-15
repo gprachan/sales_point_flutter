@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:salespoint_flutter/api/response_wrapper.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/models/request/return_items_request.dart';
 import 'package:salespoint_flutter/models/response/items_list_response.dart';
+import 'package:salespoint_flutter/models/response/return_items_response.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
 
 import '../../api/api_provider.dart';
+import '../../models/request/create_bill_request.dart';
 
 class DashboardController extends ChangeNotifier {
   final _prefs = getIt<Prefs>();
@@ -46,6 +50,7 @@ class DashboardController extends ChangeNotifier {
       itemId: data.id,
       quantity: int.tryParse(data.quantity.toString()) ?? 0,
     );
+
     if (_selectedItems.map((e) => e.itemId).contains(detail.itemId)) {
       if (!onSelectAll) {
         _selectedItems.removeWhere((element) => element.itemId == detail.itemId);
@@ -62,6 +67,38 @@ class DashboardController extends ChangeNotifier {
       items?.forEach((data) {
         setItemSelected(data, onSelectAll: true);
       });
+    }
+  }
+
+  void cancel() {
+    _selectedItems.clear();
+    _selectedItems = _selectedItems;
+    notifyListeners();
+  }
+
+  Future<String?> returnSelectedItems() async {
+    DateTime date = DateTime.now();
+    ReturnItemsRequest request = ReturnItemsRequest(
+      returnDate: '${date.year}-${date.month}-${date.day}',
+      returnItemsDetails: _selectedItems,
+    );
+    return await returnItem(request);
+  }
+
+  Future<String?> returnItem(ReturnItemsRequest request) async {
+    var response = await ApiProvider.post(
+      ApiProvider.getReturnItemsApi(_prefs.salesPointId),
+      jsonEncode(request),
+    );
+    if (response.status == ResponseWrapper.COMPLETED) {
+      loggerE('Here');
+      ReturnItemsResponse? data = ReturnItemsResponse.fromJson(response.data);
+      _selectedItems.clear();
+      _selectedItems = _selectedItems;
+      notifyListeners();
+      return null;
+    } else {
+      return response.message;
     }
   }
 }
