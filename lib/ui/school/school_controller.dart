@@ -74,15 +74,16 @@ class SchoolController extends ChangeNotifier {
   void updateData(ItemListData data) {
     // description, price, discount_amount, quality, totalAmount, discountPercent
     BillGenerateItem item = BillGenerateItem(
-        itemId: data.id,
-        name: data.name,
-        quantity: 1,
-        description: '',
-        price: 20,
-        discountAmount: 0,
-        totalAmount: 20,
-        discountPercent: 0);
-    if (_selectedItems.contains(item)) {
+      itemId: data.id,
+      name: data.name,
+      quantity: 1,
+      description: '',
+      price: 20,
+      discountAmount: 0,
+      totalAmount: 20,
+      discountPercent: 0,
+    );
+    if (_mySelectedItems.contains(data)) {
       _selectedItems.removeWhere((element) => element.itemId == item.itemId);
       _mySelectedItems.removeWhere((element) => element.id == data.id);
     } else {

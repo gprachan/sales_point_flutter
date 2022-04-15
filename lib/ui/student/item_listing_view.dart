@@ -12,6 +12,7 @@ import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/models/request/create_bill_request.dart';
 import 'package:salespoint_flutter/models/response/create_bill_response.dart';
 import 'package:salespoint_flutter/models/response/student_listing_response.dart';
+import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
 import 'package:salespoint_flutter/ui/school/school_controller.dart';
 
 import '../../data/app_api.dart';
@@ -62,6 +63,7 @@ class ItemListingView extends StatelessWidget {
         Navigator.pop(context);
         if (response.errorMessage == null) {
           Fluttertoast.showToast(msg: 'Bill Generated!');
+          Navigator.pushNamedAndRemoveUntil(context, DashboardPage.routeName, (route) => false);
         } else {
           Fluttertoast.showToast(msg: response.errorMessage ?? 'Something went wrong try again!');
         }
@@ -196,9 +198,15 @@ class _BookItem extends StatelessWidget {
         onClick(item);
       },
       child: Container(
-        color: isSelected ? Colors.green : Colors.transparent,
-        child: ListTile(
-          title: Text('${item.name}'),
+        color: isSelected ? const Color(0xffc6efff) : Colors.transparent,
+        child: Column(
+          children: [
+            ListTile(
+              title: Text('${item.name}'),
+              trailing: Icon(isSelected ? Icons.check_box : Icons.check_box_outline_blank_sharp),
+            ),
+            const Divider(height: 0),
+          ],
         ),
       ),
     );

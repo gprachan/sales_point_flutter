@@ -109,16 +109,19 @@ class _StudentListingPageState extends State<StudentListingPage> {
                   if (response.data?.data?.isNotEmpty == true) {
                     Navigator.pop(context);
                     _showBottomSheet(
-                        items: response.data?.data ?? [],
-                        onClick: (item) {
-                          Navigator.pushNamed(context, ItemListingView.routeName, arguments: {
-                            'gradeId': widget.data?.gradeId,
-                            'schoolId': widget.data?.schoolId,
-                            'studentId': student.id,
-                            'studentName': '${student.firstName} ${student.lastName}',
-                            'addressId': item.id
-                          });
+                      items: response.data?.data ?? [],
+                      onClick: (item) {
+                        Navigator.pop(context);
+
+                        Navigator.pushNamed(context, ItemListingView.routeName, arguments: {
+                          'gradeId': widget.data?.gradeId,
+                          'schoolId': widget.data?.schoolId,
+                          'studentId': student.id,
+                          'studentName': '${student.firstName} ${student.lastName}',
+                          'addressId': item.id
                         });
+                      },
+                    );
                   } else {
                     CreateAddressRequest request = CreateAddressRequest(
                       fullName: '${student.firstName} ${student.lastName}',
