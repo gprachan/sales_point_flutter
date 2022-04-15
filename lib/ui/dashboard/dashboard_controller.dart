@@ -10,7 +10,6 @@ import 'package:salespoint_flutter/models/response/return_items_response.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
 
 import '../../api/api_provider.dart';
-import '../../models/request/create_bill_request.dart';
 
 class DashboardController extends ChangeNotifier {
   final _prefs = getIt<Prefs>();

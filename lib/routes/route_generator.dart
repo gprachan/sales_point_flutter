@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:salespoint_flutter/models/create_bill_share_data.dart';
 import 'package:salespoint_flutter/models/response/items_list_response.dart';
+import 'package:salespoint_flutter/ui/book_listing/book_listing_page.dart';
 import 'package:salespoint_flutter/ui/dashboard/dashboard_controller.dart';
 import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
 import 'package:salespoint_flutter/ui/login/login_page.dart';
 import 'package:salespoint_flutter/ui/school/school_controller.dart';
-import 'package:salespoint_flutter/ui/student/student_listing_page.dart';
+import 'package:salespoint_flutter/ui/student/item_listing_view.dart';
 
-import '../ui/student/student_controller.dart';
+import '../ui/student/student_listing_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -27,10 +29,24 @@ class RouteGenerator {
               child: const DashboardPage(),
             );
           case StudentListingPage.routeName:
-            ItemListData? data = settings.arguments as ItemListData?;
-            return ChangeNotifierProvider(
-              create: (_) => StudentController(selectedItem: data),
-              child: const StudentListingPage(),
+            CreateBillShareData? data = settings.arguments as CreateBillShareData?;
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (_) => SchoolController()),
+                ChangeNotifierProvider(create: (_) => DashboardController()),
+              ],
+              child: StudentListingPage(
+                data: data,
+              ),
+            );
+          case ItemListingView.routeName:
+            Map<String, dynamic>? data = settings.arguments as Map<String, dynamic>?;
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (_) => SchoolController()),
+                ChangeNotifierProvider(create: (_) => DashboardController()),
+              ],
+              child: ItemListingView(data: data),
             );
           default:
             return ChangeNotifierProvider(

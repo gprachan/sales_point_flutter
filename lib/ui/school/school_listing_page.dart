@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:salespoint_flutter/models/create_bill_share_data.dart';
 import 'package:salespoint_flutter/models/response/school_listing_response.dart';
+import 'package:salespoint_flutter/theme/colors.dart';
 import 'package:salespoint_flutter/ui/school/school_controller.dart';
+import 'package:salespoint_flutter/ui/student/student_listing_page.dart';
 
 class SchoolListingPage extends StatelessWidget {
   const SchoolListingPage({Key? key}) : super(key: key);
@@ -22,11 +25,29 @@ class SchoolListingPage extends StatelessWidget {
                 child: ExpansionTile(
                   key: PageStorageKey<SchoolListingResponse>(data),
                   title: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
                     title: Text('${data.name}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     subtitle: Text('\n${data.address}\n${data.contactNo}'),
                   ),
-                  children: data.grades!.map((e) => ListTile(title: Text('${e.gradeName}'))).toList(),
+                  children: data.grades!
+                      .map(
+                        (e) => InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              StudentListingPage.routeName,
+                              arguments: CreateBillShareData(
+                                gradeId: e.id,
+                                schoolId: data.id,
+                              ),
+                            );
+                          },
+                          child: ListTile(
+                            title: Text('${e.gradeName}'),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
               );
             },
