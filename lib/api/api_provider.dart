@@ -15,7 +15,7 @@ import '../ui/login/login_page.dart';
 class ApiProvider {
   static const String _productionBaseUrl = 'https://api.nayakitab.com/';
   static const String _stageBaseUrl = 'https://nayakitab.iwengineering.com/';
-  static const String baseUrl = _stageBaseUrl;
+  static const String baseUrl = _productionBaseUrl;
   static const String _serverUrl = baseUrl + 'api';
 
   static const String loginApi = '$_serverUrl/auth/login';

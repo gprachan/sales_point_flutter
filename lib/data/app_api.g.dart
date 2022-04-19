@@ -10,7 +10,7 @@ part of 'app_api.dart';
 
 class _AppApiClient implements AppApiClient {
   _AppApiClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://nayakitab.iwengineering.com/';
+    baseUrl ??= 'https://api.nayakitab.com/';
   }
 
   final Dio _dio;

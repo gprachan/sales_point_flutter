@@ -9,7 +9,7 @@ void main() async {
 
   /// note(gprachan) Changes for production
   /// [showAlice] is to hide or show alice for production/staging
-  setupGetIt(await SharedPreferences.getInstance(), showAlice: true);
+  setupGetIt(await SharedPreferences.getInstance(), showAlice: false);
 
   runApp(MyApp());
 }
