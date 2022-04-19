@@ -24,7 +24,7 @@ Map<String, dynamic> _$CreateBillResponseToJson(CreateBillResponse instance) =>
 
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
       billId: json['bill_id'] as String?,
-      totalAmount: json['total_amount'] as int?,
+      totalAmount: (json['total_amount'] as num?)?.toDouble(),
       totalQuantity: json['total_quantity'] as int?,
       orderDate: json['order_date'] as String?,
       deliveryType: json['delivery_type'] as String?,

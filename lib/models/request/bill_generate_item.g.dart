@@ -11,11 +11,11 @@ BillGenerateItem _$BillGenerateItemFromJson(Map<String, dynamic> json) =>
       itemId: json['item_id'] as int?,
       name: json['name'] as String?,
       description: json['description'] as String?,
-      price: json['price'] as int?,
+      price: (json['price'] as num?)?.toDouble(),
       discountAmount: json['discount_amount'] as int?,
       quantity: json['quantity'] as int?,
-      totalAmount: json['total_amount'] as int?,
-      discountPercent: json['discount_percent'] as int?,
+      totalAmount: (json['total_amount'] as num?)?.toDouble(),
+      discountPercent: (json['discount_percent'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$BillGenerateItemToJson(BillGenerateItem instance) =>

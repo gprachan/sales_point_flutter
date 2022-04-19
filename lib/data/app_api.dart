@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:salespoint_flutter/api/api_provider.dart';
 import 'package:salespoint_flutter/models/request/create_address_request.dart';
 import 'package:salespoint_flutter/models/request/create_address_response.dart';
 import 'package:salespoint_flutter/models/request/create_bill_request.dart';
@@ -10,10 +11,12 @@ import 'package:salespoint_flutter/models/response/school_listing_response.dart'
 import 'package:salespoint_flutter/models/response/student_address_list_response.dart';
 import 'package:salespoint_flutter/models/response/student_listing_response.dart';
 
+import '../models/response/item_listing_by_school_response.dart';
+
 part 'app_api.g.dart';
 
 /// flutter pub run build_runner build --delete-conflicting-outputs
-@RestApi(baseUrl: 'https://nayakitab.iwengineering.com/')
+@RestApi(baseUrl: ApiProvider.baseUrl)
 abstract class AppApiClient {
   factory AppApiClient(Dio dio, {String? baseUrl}) = _AppApiClient;
 
@@ -24,6 +27,7 @@ abstract class AppApiClient {
   static const String _generateBillApi = "$_basePath/bill";
   static const String _createAddressId = "$_basePath/studentaddress";
   static const String _studentAddressList = "$_basePath/student/{id}/addresses";
+  static const String _itemsBySchool = "$_basePath/items/byschoolandgrade";
 
   @GET(_schoolListingApi)
   Future<HttpResponse<List<SchoolListingResponse>>> getSchoolListing();
@@ -43,4 +47,10 @@ abstract class AppApiClient {
 
   @GET(_studentAddressList)
   Future<HttpResponse<StudentAddressListResponse>> getStudentAddressList(@Path('id') int? id);
+
+  @GET(_itemsBySchool)
+  Future<HttpResponse<List<ItemListingBySchoolResponse>>> getItemsBySchool(
+    @Query('gradeId') int? gradeId,
+    @Query('schoolId') int? schoolId,
+  );
 }

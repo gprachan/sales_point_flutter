@@ -157,7 +157,7 @@ class _StudentListingPageState extends State<StudentListingPage> {
                 child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   title: Text('${student.firstName} ${student.lastName}'),
-                  subtitle: Text('\n${student.address}\n${student.email}\n${student.phoneNo}'),
+                  subtitle: Text('${student.address}\n${student.email}\n${student.phoneNo}'),
                 ),
               ),
             );

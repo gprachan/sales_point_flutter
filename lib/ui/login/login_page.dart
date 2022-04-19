@@ -27,8 +27,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _prefs = getIt<Prefs>();
   final _formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController(text: 'vinayshrestha@yopmail.com');
-  final passwordController = TextEditingController(text: 'password');
+
+  // vinayshrestha@yopmail.com
+  // password
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   bool showPassword = false;
 
   void _onLogin() async {

@@ -23,7 +23,7 @@ class Data {
   @JsonKey(name: 'bill_id')
   String? billId;
   @JsonKey(name: 'total_amount')
-  int? totalAmount;
+  double? totalAmount;
   @JsonKey(name: 'total_quantity')
   int? totalQuantity;
   @JsonKey(name: 'order_date')

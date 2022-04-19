@@ -4,6 +4,7 @@ import '../di/get_it.dart';
 
 Logger get logger => getIt<Logger>();
 
+// note(gprachan) Changes for production
 bool get loggerEnabled => true;
 
 void loggerD(dynamic message, [dynamic error, StackTrace? stackTrace]) {

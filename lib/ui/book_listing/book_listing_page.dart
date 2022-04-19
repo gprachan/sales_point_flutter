@@ -106,6 +106,7 @@ class BookListingPage extends StatelessWidget {
       if (controller.error != null) {
         return Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 controller.error ?? 'Something went wrong!',
@@ -116,7 +117,9 @@ class BookListingPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.getItems();
+                },
                 child: const Text('Refresh'),
               ),
             ],

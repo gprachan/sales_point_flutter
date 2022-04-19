@@ -15,6 +15,7 @@ import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
 import 'package:salespoint_flutter/ui/school/school_controller.dart';
 
 import '../../data/app_api.dart';
+import '../../models/response/item_listing_by_school_response.dart';
 import '../../models/response/items_list_response.dart';
 import '../../utils/alert_utils.dart';
 import '../../utils/response_handler.dart';
@@ -38,7 +39,7 @@ class ItemListingView extends StatelessWidget {
     AlertUtils.showProgressDialog(context);
     try {
       CreateBillRequest request = CreateBillRequest(
-        totalAmount: controller.totalPrice,
+        totalAmount: double.tryParse(controller.totalPrice.toStringAsFixed(2)),
         totalQuantity: 1,
         orderDate: DateTime.now().toString(),
         schoolId: data?['schoolId'],
@@ -83,7 +84,7 @@ class ItemListingView extends StatelessWidget {
       ),
       body: Consumer<DashboardController>(
         builder: (context, controller, child) {
-          List<ItemListData> items = controller.items ?? [];
+          List<ItemListingBySchoolResponse> items = controller.itemsBySchool;
           if (items.isNotEmpty) {
             return Column(
               children: [
@@ -113,7 +114,7 @@ class ItemListingView extends StatelessWidget {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: 'Total Price Rs. ${schoolController.totalPrice}',
+                            hintText: 'Total Price Rs. ${schoolController.totalPrice.toStringAsFixed(2)}',
                             prefixIcon: const Icon(Icons.money),
                             hintStyle: const TextStyle(
                               fontSize: 18,
@@ -174,9 +175,9 @@ class _BookItem extends StatelessWidget {
     required this.isSelected,
   }) : super(key: key);
 
-  final ItemListData item;
+  final ItemListingBySchoolResponse item;
   final bool isSelected;
-  final Function(ItemListData data) onClick;
+  final Function(ItemListingBySchoolResponse data) onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -189,12 +190,33 @@ class _BookItem extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              title: Text('${item.name}'),
+              contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              title: Text(
+                '${item.itemName}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
               trailing: Icon(
                 isSelected ? Icons.check_box : Icons.check_box_outline_blank_sharp,
                 color: isSelected ? AppColors.primaryColor : Colors.grey,
               ),
-              subtitle: Text('Price Rs ${item.price}'),
+              subtitle: RichText(
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                  text: "PRICE: ",
+                  children: [
+                    TextSpan(
+                      text: ' Rs. ${item.regularPrice}',
+                      style: TextStyle(
+                        decoration: item.discount == 0 ? TextDecoration.none : TextDecoration.lineThrough,
+                      ),
+                    ),
+                    TextSpan(
+                        text: (item.discount ?? 0) > 0
+                            ? ' | Rs. ${SchoolController.getDiscountedAmount(item.regularPrice ?? 0, item.discount ?? 0).toStringAsFixed(1)}'
+                            : ''),
+                  ],
+                ),
+              ),
             ),
             const Divider(height: 0),
           ],

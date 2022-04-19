@@ -11,15 +11,15 @@ class BillGenerateItem {
   @JsonKey(name: 'description')
   String? description;
   @JsonKey(name: 'price')
-  int? price;
+  double? price;
   @JsonKey(name: 'discount_amount')
   int? discountAmount;
   @JsonKey(name: 'quantity')
   int? quantity;
   @JsonKey(name: 'total_amount')
-  int? totalAmount;
+  double? totalAmount;
   @JsonKey(name: 'discount_percent')
-  int? discountPercent;
+  double? discountPercent;
 
   BillGenerateItem({this.itemId, this.name, this.description, this.price, this.discountAmount, this.quantity, this.totalAmount, this.discountPercent});
 

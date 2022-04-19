@@ -1,19 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:salespoint_flutter/api/api_provider.dart';
-import 'package:salespoint_flutter/api/response_wrapper.dart';
 import 'package:salespoint_flutter/data/app_api.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/models/create_bill_share_data.dart';
 import 'package:salespoint_flutter/models/request/bill_generate_item.dart';
 import 'package:salespoint_flutter/models/response/school_listing_response.dart';
 import 'package:salespoint_flutter/models/response/student_listing_response.dart';
-import 'package:salespoint_flutter/utils/logger.dart';
 import 'package:salespoint_flutter/utils/response_handler.dart';
 
-import '../../models/response/items_list_response.dart';
+import '../../models/response/item_listing_by_school_response.dart';
 
 class SchoolController extends ChangeNotifier {
   final apiClient = getIt<AppApiClient>();
@@ -67,25 +62,28 @@ class SchoolController extends ChangeNotifier {
 
   List<BillGenerateItem> get selectedItems => _selectedItems;
 
-  List<ItemListData> _mySelectedItems = List.of([]);
+  List<ItemListingBySchoolResponse> _mySelectedItems = List.of([]);
 
-  List<ItemListData> get mySelectedItems => _mySelectedItems;
+  List<ItemListingBySchoolResponse> get mySelectedItems => _mySelectedItems;
 
-  int _totalPrice = 0;
+  double _totalPrice = 0;
 
-  int get totalPrice => _totalPrice;
+  double get totalPrice => _totalPrice;
 
-  void updateData(ItemListData data) {
-    // description, price, discount_amount, quality, totalAmount, discountPercent
+  static double getDiscountedAmount(double totalPrice, double discount) {
+    return totalPrice - ((totalPrice * discount) / 100);
+  }
+
+  void updateData(ItemListingBySchoolResponse data) {
     BillGenerateItem item = BillGenerateItem(
       itemId: data.id,
-      name: data.name,
+      name: data.itemName,
       quantity: 1,
       description: '',
-      price: data.price,
-      discountAmount: data.discountAmount,
-      totalAmount: data.price,
-      discountPercent: 0,
+      price: getDiscountedAmount((data.regularPrice ?? 0), (data.discount ?? 0)),
+      discountAmount: data.discountPrice,
+      totalAmount: getDiscountedAmount((data.regularPrice ?? 0), (data.discount ?? 0)),
+      discountPercent: data.discount,
     );
     if (_mySelectedItems.contains(data)) {
       _selectedItems.removeWhere((element) => element.itemId == item.itemId);
@@ -101,8 +99,9 @@ class SchoolController extends ChangeNotifier {
   }
 
   void _calculatePrice() {
-    for (var element in _mySelectedItems) {
-      _totalPrice += element.price ?? 0;
+    _totalPrice = 0;
+    for (var element in _selectedItems) {
+      _totalPrice += element.totalAmount ?? 0;
     }
     notifyListeners();
   }

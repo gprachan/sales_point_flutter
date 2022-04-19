@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:retrofit/retrofit.dart';
 import 'package:salespoint_flutter/api/response_wrapper.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
@@ -10,13 +11,29 @@ import 'package:salespoint_flutter/models/response/return_items_response.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
 
 import '../../api/api_provider.dart';
+import '../../data/app_api.dart';
+import '../../models/response/item_listing_by_school_response.dart';
+import '../../utils/response_handler.dart';
 
 class DashboardController extends ChangeNotifier {
   final _prefs = getIt<Prefs>();
+  final apiClient = getIt<AppApiClient>();
 
-  DashboardController({bool getItems = true}) {
-    if (getItems) this.getItems();
+  DashboardController({
+    bool getItems = true,
+    bool itemsBySchool = false,
+    Map<String, dynamic>? data,
+  }) {
+    if (getItems) {
+      this.getItems();
+    }
+    if (itemsBySchool) {
+      _data = data;
+      getItemsBySchool();
+    }
   }
+
+  Map<String, dynamic>? _data;
 
   String? _error;
   List<ItemListData>? _items;
@@ -99,5 +116,26 @@ class DashboardController extends ChangeNotifier {
     } else {
       return response.message;
     }
+  }
+
+  List<ItemListingBySchoolResponse>? _itemsBySchool;
+
+  List<ItemListingBySchoolResponse> get itemsBySchool => _itemsBySchool ?? [];
+
+  Future<void> getItemsBySchool() async {
+    var response = await doTryCatch(() async {
+      HttpResponse<List<ItemListingBySchoolResponse>> response = await apiClient.getItemsBySchool(_data?['gradeId'], _data?['schoolId']);
+      return response.handleResponse();
+    });
+    if (response.errorMessage == null) {
+      if (response.data?.isEmpty == true) {
+        _error = "No items found for given school and grade!";
+      } else {
+        _itemsBySchool = response.data;
+      }
+    } else {
+      _error = response.errorMessage;
+    }
+    notifyListeners();
   }
 }

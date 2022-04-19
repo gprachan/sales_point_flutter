@@ -44,7 +44,13 @@ class RouteGenerator {
             return MultiProvider(
               providers: [
                 ChangeNotifierProvider(create: (_) => SchoolController()),
-                ChangeNotifierProvider(create: (_) => DashboardController()),
+                ChangeNotifierProvider(
+                  create: (_) => DashboardController(
+                    getItems: false,
+                    itemsBySchool: true,
+                    data:data,
+                  ),
+                ),
               ],
               child: ItemListingView(data: data),
             );

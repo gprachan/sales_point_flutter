@@ -7,7 +7,7 @@ part 'create_bill_request.g.dart';
 @JsonSerializable(ignoreUnannotated: false)
 class CreateBillRequest {
   @JsonKey(name: 'total_amount')
-  int? totalAmount;
+  double? totalAmount;
   @JsonKey(name: 'total_quantity')
   int? totalQuantity;
   @JsonKey(name: 'order_date')
