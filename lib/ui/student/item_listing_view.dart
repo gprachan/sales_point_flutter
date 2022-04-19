@@ -38,8 +38,10 @@ class ItemListingView extends StatelessWidget {
   ) async {
     AlertUtils.showProgressDialog(context);
     try {
+      // todo(gprachan) double are rounded up on UI and while sending to server, instead round it during calculation
+      // double.tryParse(controller.totalPrice.toStringAsFixed(2)),
       CreateBillRequest request = CreateBillRequest(
-        totalAmount: double.tryParse(controller.totalPrice.toStringAsFixed(2)),
+        totalAmount: double.tryParse(controller.totalPrice.round().toString()),
         totalQuantity: 1,
         orderDate: DateTime.now().toString(),
         schoolId: data?['schoolId'],
@@ -114,7 +116,7 @@ class ItemListingView extends StatelessWidget {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
-                            hintText: 'Total Price Rs. ${schoolController.totalPrice.toStringAsFixed(2)}',
+                            hintText: 'Total Price Rs. ${schoolController.totalPrice.round().toStringAsFixed(2)}',
                             prefixIcon: const Icon(Icons.money),
                             hintStyle: const TextStyle(
                               fontSize: 18,
@@ -186,7 +188,7 @@ class _BookItem extends StatelessWidget {
         onClick(item);
       },
       child: Container(
-        color: /*isSelected ? const Color(0xffc6efff) :*/ Colors.transparent,
+        color: Colors.transparent,
         child: Column(
           children: [
             ListTile(
@@ -205,14 +207,14 @@ class _BookItem extends StatelessWidget {
                   text: "PRICE: ",
                   children: [
                     TextSpan(
-                      text: ' Rs. ${item.regularPrice}',
+                      text: ' Rs. ${item.regularPrice?.round()}',
                       style: TextStyle(
                         decoration: item.discount == 0 ? TextDecoration.none : TextDecoration.lineThrough,
                       ),
                     ),
                     TextSpan(
                         text: (item.discount ?? 0) > 0
-                            ? ' | Rs. ${SchoolController.getDiscountedAmount(item.regularPrice ?? 0, item.discount ?? 0).toStringAsFixed(1)}'
+                            ? ' | Rs. ${SchoolController.getDiscountedAmount(item.regularPrice ?? 0, item.discount ?? 0)}'
                             : ''),
                   ],
                 ),

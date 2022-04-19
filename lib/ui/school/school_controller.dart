@@ -70,8 +70,8 @@ class SchoolController extends ChangeNotifier {
 
   double get totalPrice => _totalPrice;
 
-  static double getDiscountedAmount(double totalPrice, double discount) {
-    return totalPrice - ((totalPrice * discount) / 100);
+  static int getDiscountedAmount(double totalPrice, double discount) {
+    return (totalPrice - ((totalPrice * discount) / 100)).round();
   }
 
   void updateData(ItemListingBySchoolResponse data) {

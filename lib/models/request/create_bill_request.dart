@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:salespoint_flutter/models/request/bill_generate_item.dart';
-import 'package:salespoint_flutter/models/response/items_list_response.dart';
 
 part 'create_bill_request.g.dart';
 

@@ -11,13 +11,13 @@ class BillGenerateItem {
   @JsonKey(name: 'description')
   String? description;
   @JsonKey(name: 'price')
-  double? price;
+  int? price;
   @JsonKey(name: 'discount_amount')
   int? discountAmount;
   @JsonKey(name: 'quantity')
   int? quantity;
   @JsonKey(name: 'total_amount')
-  double? totalAmount;
+  int? totalAmount;
   @JsonKey(name: 'discount_percent')
   double? discountPercent;
 
