@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:alice/alice.dart';
 import 'package:salespoint_flutter/api/config.dart';
 import 'package:salespoint_flutter/api/response_wrapper.dart';
 
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
+import 'package:alice/core/alice_http_extensions.dart';
 
 import '../service/navigation_service.dart';
 import '../ui/login/login_page.dart';
@@ -15,7 +17,16 @@ import '../ui/login/login_page.dart';
 class ApiProvider {
   static const String _productionBaseUrl = 'https://api.nayakitab.com/';
   static const String _stageBaseUrl = 'https://nayakitab.iwengineering.com/';
-  static const String baseUrl = _productionBaseUrl;
+  static const String baseUrl = _stageBaseUrl;
+
+  static bool showLog() {
+    if (baseUrl == _productionBaseUrl) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   static const String _serverUrl = baseUrl + 'api';
 
   static const String loginApi = '$_serverUrl/auth/login';
@@ -30,12 +41,15 @@ class ApiProvider {
 
   static Future<ResponseWrapper> get(String url) async {
     try {
-      final response = await http.get(
+      final response = http.get(
         Uri.parse(url),
         headers: NetworkConfig.headersWith(),
       );
-      // .interceptWithAlice(getIt<Alice>());
-      return _response(response);
+      if (showLog()) {
+        response.interceptWithAlice(getIt<Alice>());
+      }
+
+      return _response(await response);
     } on SocketException {
       return ResponseWrapper(ResponseWrapper.ERROR, null, 'No Internet connection');
     } catch (e) {
@@ -45,15 +59,15 @@ class ApiProvider {
 
   static Future<ResponseWrapper> post(String url, Object? data) async {
     try {
-      final response = await http.post(
+      final response = http.post(
         Uri.parse(url),
         body: data,
         headers: NetworkConfig.headersWith(),
-        // encoding: Encoding.getByName("utf-8"),
       );
-      // .interceptWithAlice(getIt<Alice>(), body: data);
-
-      return _response(response);
+      if (showLog()) {
+        response.interceptWithAlice(getIt<Alice>(), body: data);
+      }
+      return _response(await response);
     } on Exception catch (e) {
       return ResponseWrapper(ResponseWrapper.ERROR, null, '$e');
     } catch (e) {

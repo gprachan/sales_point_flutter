@@ -18,21 +18,39 @@ class DashboardPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(
-              onPressed: () {
-                AlertUtils.showCancelDialog(
-                  context,
-                  'Logout',
-                  'Do you want to log out?',
-                  'Log out',
-                  onClick: () async {
-                    await getIt<Prefs>().logout();
-                    Navigator.pushReplacementNamed(context, LoginPage.routeName);
-                  },
-                );
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return List.generate(2, (index) {
+                  return PopupMenuItem(
+                    child: index == 0
+                        ? ListTile(
+                            title: Text("${getIt<Prefs>().loginData?.user?.name}"),
+                            subtitle: Text("${getIt<Prefs>().loginData?.user?.email}"),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                              AlertUtils.showCancelDialog(
+                                context,
+                                'Logout',
+                                'Do you want to log out?',
+                                'Log out',
+                                onClick: () async {
+                                  await getIt<Prefs>().logout();
+                                  Navigator.pushReplacementNamed(context, LoginPage.routeName);
+                                },
+                              );
+                            },
+                            child: const ListTile(
+                              title: Text('Log out'),
+                              leading: Icon(Icons.login),
+                            ),
+                          ),
+                  );
+                });
               },
               icon: const Icon(
-                Icons.login,
+                Icons.more_vert,
                 color: AppColors.primaryColor,
               ),
             ),
