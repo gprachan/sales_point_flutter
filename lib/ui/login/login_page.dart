@@ -7,6 +7,7 @@ import 'package:salespoint_flutter/api/response_wrapper.dart';
 import 'package:salespoint_flutter/common/custom_button.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
+import 'package:salespoint_flutter/extensions/string_ext.dart';
 import 'package:salespoint_flutter/models/request/login_request.dart';
 import 'package:salespoint_flutter/models/response/login_response.dart';
 import 'package:salespoint_flutter/theme/assets.dart';
@@ -97,6 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                   validator: (value) {
                     if (value == null || value.isEmpty == true) {
                       return 'Email is required!';
+                    } else if (!value.isValidEmail()) {
+                      return 'Invalid email address!';
                     }
                     return null;
                   },

@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:salespoint_flutter/data/app_api.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
+import 'package:salespoint_flutter/extensions/string_ext.dart';
 import 'package:salespoint_flutter/models/create_bill_share_data.dart';
 import 'package:salespoint_flutter/models/request/add_student_request.dart';
 import 'package:salespoint_flutter/models/response/add_student_response.dart';
@@ -122,6 +123,8 @@ class AddStudentPage extends StatelessWidget {
                   validator: (value) {
                     if (value == null || value.isEmpty == true) {
                       return 'Email address is required!';
+                    } else if (!value.isValidEmail()) {
+                      return 'Invalid email address!';
                     }
                     return null;
                   },
