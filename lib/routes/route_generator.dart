@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salespoint_flutter/models/create_bill_share_data.dart';
 import 'package:salespoint_flutter/models/response/items_list_response.dart';
+import 'package:salespoint_flutter/ui/add_student/add_student_page.dart';
 import 'package:salespoint_flutter/ui/book_listing/book_listing_page.dart';
 import 'package:salespoint_flutter/ui/dashboard/dashboard_controller.dart';
 import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
@@ -39,6 +40,9 @@ class RouteGenerator {
                 data: data,
               ),
             );
+          case AddStudentPage.routeName:
+            CreateBillShareData? data = settings.arguments as CreateBillShareData?;
+            return AddStudentPage(data: data);
           case ItemListingView.routeName:
             Map<String, dynamic>? data = settings.arguments as Map<String, dynamic>?;
             return MultiProvider(
@@ -48,7 +52,7 @@ class RouteGenerator {
                   create: (_) => DashboardController(
                     getItems: false,
                     itemsBySchool: true,
-                    data:data,
+                    data: data,
                   ),
                 ),
               ],

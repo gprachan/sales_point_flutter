@@ -1,4 +1,3 @@
-import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
@@ -26,11 +25,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sales Point',
       navigatorKey: getIt<NavigationService>().navigatorKey,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: AppColors.primaryColor,
         scaffoldBackgroundColor: const Color(0xfff8f0d4),
         appBarTheme: const AppBarTheme(
-          backgroundColor:  Color(0xfff8f0d4)
+          backgroundColor: Color(0xfff8f0d4),
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 18.0,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,16 +8,14 @@ import 'package:salespoint_flutter/data/app_api.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/models/request/create_address_request.dart';
 import 'package:salespoint_flutter/models/request/create_address_response.dart';
-import 'package:salespoint_flutter/models/response/common_response.dart';
 import 'package:salespoint_flutter/models/response/student_address_list_response.dart';
 import 'package:salespoint_flutter/models/response/student_listing_response.dart';
-import 'package:salespoint_flutter/ui/dashboard/dashboard_controller.dart';
+import 'package:salespoint_flutter/ui/add_student/add_student_page.dart';
 import 'package:salespoint_flutter/ui/school/school_controller.dart';
 import 'package:salespoint_flutter/ui/student/item_listing_view.dart';
 import 'package:salespoint_flutter/utils/alert_utils.dart';
 
 import '../../models/create_bill_share_data.dart';
-import '../../models/response/create_bill_response.dart';
 import '../../models/response/items_list_response.dart';
 import '../../utils/response_handler.dart';
 
@@ -92,6 +88,18 @@ class _StudentListingPageState extends State<StudentListingPage> {
           'Students',
           style: TextStyle(color: Colors.black),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            AddStudentPage.routeName,
+            arguments: widget.data,
+          ).then((value) {
+            _pagingController.refresh();
+          });
+        },
+        child: const Icon(Icons.add),
       ),
       body: PagedListView<int, StudentData>(
         pagingController: _pagingController,

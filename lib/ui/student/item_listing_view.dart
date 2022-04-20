@@ -143,13 +143,11 @@ class ItemListingView extends StatelessWidget {
           if (controller.error != null) {
             return Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     controller.error ?? 'Something went wrong!',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.red,
-                    ),
+                    style: const TextStyle(fontSize: 18, color: Colors.red),
                   ),
                   const SizedBox(height: 12),
                   TextButton(

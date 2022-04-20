@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:salespoint_flutter/api/api_provider.dart';
+import 'package:salespoint_flutter/models/request/add_student_request.dart';
 import 'package:salespoint_flutter/models/request/create_address_request.dart';
 import 'package:salespoint_flutter/models/request/create_address_response.dart';
 import 'package:salespoint_flutter/models/request/create_bill_request.dart';
+import 'package:salespoint_flutter/models/response/add_student_response.dart';
 import 'package:salespoint_flutter/models/response/common_response.dart';
 import 'package:salespoint_flutter/models/response/create_bill_response.dart';
 import 'package:salespoint_flutter/models/response/school_listing_response.dart';
@@ -28,6 +30,7 @@ abstract class AppApiClient {
   static const String _createAddressId = "$_basePath/studentaddress";
   static const String _studentAddressList = "$_basePath/student/{id}/addresses";
   static const String _itemsBySchool = "$_basePath/items/byschoolandgrade";
+  static const String _addStudentApi = "$_basePath/student";
 
   @GET(_schoolListingApi)
   Future<HttpResponse<List<SchoolListingResponse>>> getSchoolListing();
@@ -53,4 +56,7 @@ abstract class AppApiClient {
     @Query('gradeId') int? gradeId,
     @Query('schoolId') int? schoolId,
   );
+
+  @POST(_addStudentApi)
+  Future<HttpResponse<AddStudentResponse>> addStudent(@Body() AddStudentRequest request);
 }

@@ -8,7 +8,10 @@ import 'app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  setupGetIt(await SharedPreferences.getInstance(), showAlice: ApiProvider.showLog());
+  setupGetIt(
+    await SharedPreferences.getInstance(),
+    showAlice: ApiProvider.showLog(),
+  );
 
   runApp(MyApp());
 }

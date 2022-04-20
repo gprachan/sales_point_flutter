@@ -40,8 +40,8 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState?.validate() == true) {
       AlertUtils.showProgressDialog(context);
       LoginRequest request = LoginRequest(
-        email: emailController.text,
-        password: passwordController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
       var response = await ApiProvider.post(ApiProvider.loginApi, jsonEncode(request));
       if (response.status == ResponseWrapper.COMPLETED) {
@@ -89,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 24),
                 TextFormField(
                   controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     hintText: 'Enter email',
                     prefixIcon: Icon(Icons.email),
