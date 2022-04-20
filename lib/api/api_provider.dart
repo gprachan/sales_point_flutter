@@ -17,7 +17,7 @@ import '../ui/login/login_page.dart';
 class ApiProvider {
   static const String _productionBaseUrl = 'https://api.nayakitab.com/';
   static const String _stageBaseUrl = 'https://nayakitab.iwengineering.com/';
-  static const String baseUrl = _stageBaseUrl;
+  static const String baseUrl = _productionBaseUrl;
 
   static bool showLog() {
     if (baseUrl == _productionBaseUrl) {
