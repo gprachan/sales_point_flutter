@@ -6,5 +6,6 @@ class AppColors {
   static const primarySwatch = MaterialColor(0xffFE5F55, {});
 
   static const customGray = Color(0xff2b2b2b);
-  static const scaffoldColor = Color(0xfff8f0d4);
+  static const scaffoldColor = Color(0xfff6fafc);
+  static const selectedColor = Color(0xffe0f6e7);
 }

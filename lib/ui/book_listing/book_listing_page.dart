@@ -18,89 +18,110 @@ class BookListingPage extends StatelessWidget {
     return Consumer<DashboardController>(builder: (context, controller, child) {
       List<ItemListData> items = controller.items ?? [];
       if (items.isNotEmpty) {
-        return Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-                itemCount: items.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _ListItem(
-                    data: items[index],
-                    isSelected: controller.selectedItems.map((e) => e.itemId).contains(items[index].id),
-                    onLongPress: (data) {
-                      controller.setItemSelected(data);
-                    },
-                    onTap: (data) {
-                      controller.setItemSelected(data);
-                    },
-                  );
-                },
+        return WillPopScope(
+          onWillPop: () async {
+            if (controller.selectedItems.isNotEmpty) {
+              controller.cancel();
+              return false;
+            }
+            return true;
+          },
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+                  itemCount: items.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _ListItem(
+                      data: items[index],
+                      isSelected: controller.selectedItems.map((e) => e.itemId).contains(items[index].id),
+                      onLongPress: (data) {
+                        controller.setItemSelected(data);
+                      },
+                      onTap: (data) {
+                        controller.setItemSelected(data);
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
-            Visibility(
-              visible: controller.selectedItems.isNotEmpty,
-              child: Column(
-                children: [
-                  const Divider(height: 0, thickness: 1),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    color: const Color(0xffc5f3ca), // const Color(0xffb7e7ee),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                controller.onSelectAll();
-                              },
-                              child: const Text('Select All'),
-                            ),
-                            Text('${controller.selectedItems.length} of ${controller.items?.length}'),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    controller.cancel();
-                                  },
-                                  child: const Text(
-                                    'Cancel',
-                                    style: TextStyle(color: Colors.red, fontSize: 16),
+              Visibility(
+                visible: controller.selectedItems.isNotEmpty,
+                child: Column(
+                  children: [
+                    const Divider(height: 0, thickness: 1),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      color: AppColors.selectedColor,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      controller.selectedItems.length == controller.items?.length
+                                          ? controller.cancel()
+                                          : controller.onSelectAll();
+                                    },
+                                    child: Icon(
+                                      controller.selectedItems.length == controller.items?.length
+                                          ? Icons.radio_button_checked
+                                          : Icons.radio_button_off,
+                                      color: AppColors.primaryColor,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 12),
-                                ElevatedButton(
-                                  style: buttonStyle,
-                                  onPressed: () async {
-                                    AlertUtils.showProgressDialog(context);
-                                    String? error = await controller.returnSelectedItems();
-                                    Navigator.pop(context);
-                                    if (error == null) {
-                                      Fluttertoast.showToast(msg: 'Items returned.');
-                                      await controller.getItems();
-                                    } else {
-                                      AlertUtils.showAlertDialog(context, 'Error', error, 'Ok');
-                                    }
-                                  },
-                                  child: const Text(
-                                    'Return Book',
-                                    style: TextStyle(color: Colors.white, fontSize: 12),
+                                  const SizedBox(width: 12),
+                                  Text('${controller.selectedItems.length} / ${controller.items?.length}'),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  /*TextButton(
+                                    onPressed: () {
+                                      controller.cancel();
+                                    },
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
+                                  const SizedBox(width: 12),*/
+                                  ElevatedButton(
+                                    style: buttonStyle,
+                                    onPressed: () async {
+                                      AlertUtils.showProgressDialog(context);
+                                      String? error = await controller.returnSelectedItems();
+                                      Navigator.pop(context);
+                                      if (error == null) {
+                                        Fluttertoast.showToast(msg: 'Items returned.');
+                                        await controller.getItems();
+                                      } else {
+                                        AlertUtils.showAlertDialog(context, 'Error', error, 'Ok');
+                                      }
+                                    },
+                                    child: const Text(
+                                      'Return Book',
+                                      style: TextStyle(color: Colors.white, fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       }
       if (controller.error != null) {
@@ -157,7 +178,7 @@ class _ListItem extends StatelessWidget {
         onTap(data);
       },
       child: Card(
-        color: isSelected ? const Color(0xffc5f3ca) : AppColors.scaffoldColor,
+        color: isSelected ? AppColors.selectedColor : AppColors.scaffoldColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18),
           child: Row(

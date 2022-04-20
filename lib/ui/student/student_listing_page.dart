@@ -89,7 +89,7 @@ class _StudentListingPageState extends State<StudentListingPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.pushNamed(
             context,
@@ -99,7 +99,13 @@ class _StudentListingPageState extends State<StudentListingPage> {
             _pagingController.refresh();
           });
         },
-        child: const Icon(Icons.add),
+        label: Row(
+          children: const [
+            Icon(Icons.add_circle),
+            SizedBox(width: 8),
+            Text('Add Student'),
+          ],
+        ),
       ),
       body: PagedListView<int, StudentData>(
         pagingController: _pagingController,

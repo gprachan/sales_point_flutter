@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: AppColors.primaryColor,
-        scaffoldBackgroundColor: const Color(0xfff8f0d4),
+        scaffoldBackgroundColor: AppColors.scaffoldColor,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xfff8f0d4),
+          backgroundColor: AppColors.scaffoldColor,
           iconTheme: IconThemeData(color: Colors.black),
           titleTextStyle: TextStyle(
             color: Colors.black,
@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: AppColors.primaryColor),
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: AppColors.primaryColor, width: 1.0),
