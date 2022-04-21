@@ -41,7 +41,8 @@ class ItemListingView extends StatelessWidget {
       // todo(gprachan) double are rounded up on UI and while sending to server, instead round it during calculation
       // double.tryParse(controller.totalPrice.toStringAsFixed(2)),
       CreateBillRequest request = CreateBillRequest(
-        totalAmount: double.tryParse(controller.totalPrice.round().toString()),
+        totalAmount: controller.totalPrice.round().toDouble(),
+        regularPrice: controller.regularPrice.round().toDouble(),
         totalQuantity: 1,
         orderDate: DateTime.now().toString(),
         schoolId: data?['schoolId'],
@@ -51,8 +52,8 @@ class ItemListingView extends StatelessWidget {
         fullName: data?['studentName'],
         salesPointId: _prefs.salesPointId,
         studentAddressId: data?['addressId'],
-        billItems: controller.selectedItems,
         deliveryType: 'express',
+        billItems: controller.selectedItems,
       );
 
       var response = await doTryCatch(() async {
@@ -70,6 +71,29 @@ class ItemListingView extends StatelessWidget {
       Navigator.pop(context);
       Fluttertoast.showToast(msg: '$e!');
     }
+  }
+
+  Widget totalPrice(SchoolController controller) {
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+        text: "Total Price ",
+        children: [
+          TextSpan(
+            text: controller.totalPrice == controller.regularPrice ? '' : 'Rs. ${controller.regularPrice.round()}',
+            style: const TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey),
+          ),
+          TextSpan(
+            text: controller.totalPrice == controller.regularPrice ? '' : '  |  ',
+          ),
+          TextSpan(text: 'Rs. ${controller.totalPrice.round()}')
+        ],
+      ),
+    );
   }
 
   @override
@@ -113,18 +137,21 @@ class ItemListingView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                     child: Column(
                       children: [
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: 'Total Price Rs. ${schoolController.totalPrice.round().toStringAsFixed(2)}',
-                            prefixIcon: const Icon(Icons.money),
-                            hintStyle: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                        Stack(
+                          alignment: Alignment.centerLeft,
+                          children: [
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(Icons.money),
+                              ),
+                              enabled: false,
                             ),
-                          ),
-                          enabled: false,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 44.0),
+                              child: totalPrice(schoolController),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 16),
                         CustomButton(

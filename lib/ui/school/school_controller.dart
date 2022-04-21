@@ -67,8 +67,11 @@ class SchoolController extends ChangeNotifier {
   List<ItemListingBySchoolResponse> get mySelectedItems => _mySelectedItems;
 
   double _totalPrice = 0;
+  double _regularPrice = 0;
 
   double get totalPrice => _totalPrice;
+
+  double get regularPrice => _regularPrice;
 
   static int getDiscountedAmount(double totalPrice, double discount) {
     return (totalPrice - ((totalPrice * discount) / 100)).round();
@@ -81,6 +84,7 @@ class SchoolController extends ChangeNotifier {
       quantity: 1,
       description: '',
       price: getDiscountedAmount((data.regularPrice ?? 0), (data.discount ?? 0)),
+      regularPrice: data.regularPrice?.round(),
       discountAmount: data.discountPrice,
       totalAmount: getDiscountedAmount((data.regularPrice ?? 0), (data.discount ?? 0)),
       discountPercent: data.discount,
@@ -100,8 +104,10 @@ class SchoolController extends ChangeNotifier {
 
   void _calculatePrice() {
     _totalPrice = 0;
+    _regularPrice = 0;
     for (var element in _selectedItems) {
       _totalPrice += element.totalAmount ?? 0;
+      _regularPrice += element.regularPrice ?? 0;
     }
     notifyListeners();
   }

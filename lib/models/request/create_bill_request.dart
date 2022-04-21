@@ -7,6 +7,8 @@ part 'create_bill_request.g.dart';
 class CreateBillRequest {
   @JsonKey(name: 'total_amount')
   double? totalAmount;
+  @JsonKey(name: 'regular_price')
+  double? regularPrice;
   @JsonKey(name: 'total_quantity')
   int? totalQuantity;
   @JsonKey(name: 'order_date')
@@ -32,6 +34,7 @@ class CreateBillRequest {
 
   CreateBillRequest({
     this.totalAmount,
+    this.regularPrice,
     this.totalQuantity,
     this.orderDate,
     this.deliveryType,

@@ -9,6 +9,7 @@ part of 'create_bill_request.dart';
 CreateBillRequest _$CreateBillRequestFromJson(Map<String, dynamic> json) =>
     CreateBillRequest(
       totalAmount: (json['total_amount'] as num?)?.toDouble(),
+      regularPrice: (json['regular_price'] as num?)?.toDouble(),
       totalQuantity: json['total_quantity'] as int?,
       orderDate: json['order_date'] as String?,
       deliveryType: json['delivery_type'] as String?,
@@ -27,6 +28,7 @@ CreateBillRequest _$CreateBillRequestFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CreateBillRequestToJson(CreateBillRequest instance) =>
     <String, dynamic>{
       'total_amount': instance.totalAmount,
+      'regular_price': instance.regularPrice,
       'total_quantity': instance.totalQuantity,
       'order_date': instance.orderDate,
       'delivery_type': instance.deliveryType,

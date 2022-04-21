@@ -1,6 +1,6 @@
-import 'package:json_annotation/json_annotation.dart'; 
+import 'package:json_annotation/json_annotation.dart';
 
-part 'bill_generate_item.g.dart'; 
+part 'bill_generate_item.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class BillGenerateItem {
@@ -12,6 +12,8 @@ class BillGenerateItem {
   String? description;
   @JsonKey(name: 'price')
   int? price;
+  @JsonKey(name: 'regular_price')
+  int? regularPrice;
   @JsonKey(name: 'discount_amount')
   int? discountAmount;
   @JsonKey(name: 'quantity')
@@ -21,10 +23,19 @@ class BillGenerateItem {
   @JsonKey(name: 'discount_percent')
   double? discountPercent;
 
-  BillGenerateItem({this.itemId, this.name, this.description, this.price, this.discountAmount, this.quantity, this.totalAmount, this.discountPercent});
+  BillGenerateItem({
+    this.itemId,
+    this.name,
+    this.description,
+    this.price,
+    this.regularPrice,
+    this.discountAmount,
+    this.quantity,
+    this.totalAmount,
+    this.discountPercent,
+  });
 
-   factory BillGenerateItem.fromJson(Map<String, dynamic> json) => _$BillGenerateItemFromJson(json);
+  factory BillGenerateItem.fromJson(Map<String, dynamic> json) => _$BillGenerateItemFromJson(json);
 
-   Map<String, dynamic> toJson() => _$BillGenerateItemToJson(this);
+  Map<String, dynamic> toJson() => _$BillGenerateItemToJson(this);
 }
-
