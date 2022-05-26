@@ -220,7 +220,7 @@ class _ListItem extends StatelessWidget {
               ),
               Card(
                 child: Image.network(
-                  'https://marketplace.canva.com/EAD7WuSVrt0/1/0/1003w/canva-colorful-illustration-young-adult-book-cover-LVthABb24ik.jpg',
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoCBdaTqCENdnS8TlC-sS-bsXWlWs7o1asyw&usqp=CAU',
                   width: 110,
                   height: 160,
                   fit: BoxFit.cover,

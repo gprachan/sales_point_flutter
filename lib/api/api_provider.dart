@@ -19,6 +19,7 @@ class ApiProvider {
   static const String _stageBaseUrl = 'https://nayakitab.iwengineering.com/';
   static const String baseUrl = _stageBaseUrl;
 
+  // If baseUrl is production Url then don't show logs else show logs
   static bool showLog() {
     if (baseUrl == _productionBaseUrl) {
       return false;
@@ -77,12 +78,7 @@ class ApiProvider {
 
   static ResponseWrapper _response(http.Response response) {
     loggerE(
-      "API RESPONSE: " +
-          response.statusCode.toString() +
-          " -> " +
-          response.request!.url.toString() +
-          "\n" +
-          response.body.toString(),
+      "API RESPONSE: " + response.statusCode.toString() + " -> " + response.request!.url.toString() + "\n" + response.body.toString(),
     );
     try {
       switch (response.statusCode) {

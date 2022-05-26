@@ -32,8 +32,8 @@ class _LoginPageState extends State<LoginPage> {
   // vinayshrestha@yopmail.com
   // password
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(text: ApiProvider.showLog() ? 'vinayshrestha@yopmail.com' : '');
+  final passwordController = TextEditingController(text: ApiProvider.showLog() ? 'password' : '');
   bool showPassword = false;
 
   void _onLogin() async {

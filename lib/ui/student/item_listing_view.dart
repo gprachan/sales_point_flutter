@@ -178,7 +178,9 @@ class ItemListingView extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.getItemsBySchool();
+                    },
                     child: const Text('Refresh'),
                   ),
                 ],
@@ -237,10 +239,7 @@ class _BookItem extends StatelessWidget {
                         decoration: item.discount == 0 ? TextDecoration.none : TextDecoration.lineThrough,
                       ),
                     ),
-                    TextSpan(
-                        text: (item.discount ?? 0) > 0
-                            ? ' | Rs. ${SchoolController.getDiscountedAmount(item.regularPrice ?? 0, item.discount ?? 0)}'
-                            : ''),
+                    TextSpan(text: (item.discount ?? 0) > 0 ? ' | Rs. ${SchoolController.getDiscountedAmount(item.regularPrice ?? 0, item.discount ?? 0)}' : ''),
                   ],
                 ),
               ),
