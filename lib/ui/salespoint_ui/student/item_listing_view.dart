@@ -1,24 +1,20 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:salespoint_flutter/common/custom_button.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
+import 'package:salespoint_flutter/data/app_api.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/models/request/create_bill_request.dart';
 import 'package:salespoint_flutter/models/response/create_bill_response.dart';
+import 'package:salespoint_flutter/models/response/item_listing_by_school_response.dart';
 import 'package:salespoint_flutter/theme/colors.dart';
-import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
-import 'package:salespoint_flutter/ui/school/school_controller.dart';
-
-import '../../data/app_api.dart';
-import '../../models/response/item_listing_by_school_response.dart';
-import '../../models/response/items_list_response.dart';
-import '../../utils/alert_utils.dart';
-import '../../utils/response_handler.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_page.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/school/school_controller.dart';
+import 'package:salespoint_flutter/utils/alert_utils.dart';
+import 'package:salespoint_flutter/utils/response_handler.dart';
 import '../dashboard/dashboard_controller.dart';
 
 class ItemListingView extends StatelessWidget {

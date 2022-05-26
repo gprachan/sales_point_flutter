@@ -12,7 +12,7 @@ import 'package:salespoint_flutter/models/request/login_request.dart';
 import 'package:salespoint_flutter/models/response/login_response.dart';
 import 'package:salespoint_flutter/theme/assets.dart';
 import 'package:salespoint_flutter/theme/colors.dart';
-import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_page.dart';
 import 'package:salespoint_flutter/utils/alert_utils.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
 
@@ -32,8 +32,8 @@ class _LoginPageState extends State<LoginPage> {
   // vinayshrestha@yopmail.com
   // password
 
-  final emailController = TextEditingController(text: ApiProvider.showLog() ? 'vinayshrestha@yopmail.com' : '');
-  final passwordController = TextEditingController(text: ApiProvider.showLog() ? 'password' : '');
+  final emailController = TextEditingController(text: ApiProvider.isDebug() ? 'vinayshrestha@yopmail.com' : '');
+  final passwordController = TextEditingController(text: ApiProvider.isDebug() ? 'password' : '');
   bool showPassword = false;
 
   void _onLogin() async {
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                       icon: Icon(
-                        showPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                        !showPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                       ),
                     ),
                   ),
@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     return null;
                   },
-                  obscureText: showPassword,
+                  obscureText: !showPassword,
                 ),
                 const SizedBox(height: 16),
                 CustomButton(

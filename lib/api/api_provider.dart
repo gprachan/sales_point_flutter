@@ -8,11 +8,11 @@ import 'package:salespoint_flutter/api/response_wrapper.dart';
 import 'package:http/http.dart' as http;
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/login/login_page.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
 import 'package:alice/core/alice_http_extensions.dart';
 
 import '../service/navigation_service.dart';
-import '../ui/login/login_page.dart';
 
 class ApiProvider {
   static const String _productionBaseUrl = 'https://api.nayakitab.com/';
@@ -20,11 +20,11 @@ class ApiProvider {
   static const String baseUrl = _stageBaseUrl;
 
   // If baseUrl is production Url then don't show logs else show logs
-  static bool showLog() {
-    if (baseUrl == _productionBaseUrl) {
-      return false;
-    } else {
+  static bool isDebug() {
+    if (baseUrl == _stageBaseUrl) {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -46,7 +46,7 @@ class ApiProvider {
         Uri.parse(url),
         headers: NetworkConfig.headersWith(),
       );
-      if (showLog()) {
+      if (isDebug()) {
         response.interceptWithAlice(getIt<Alice>());
       }
 
@@ -65,7 +65,7 @@ class ApiProvider {
         body: data,
         headers: NetworkConfig.headersWith(),
       );
-      if (showLog()) {
+      if (isDebug()) {
         response.interceptWithAlice(getIt<Alice>(), body: data);
       }
       return _response(await response);

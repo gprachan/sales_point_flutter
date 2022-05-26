@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 
 class AlertUtils {
-  static void showAlertDialog(context, title, message, positiveButtonText, {Function? onClick}) {
+  static const _roundedShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(18.0),
+    ),
+  );
+
+  static void showAlertDialog(
+    context, {
+    String title = 'App Alert',
+    required String message,
+    String positiveText = 'Ok',
+    Function? onClick,
+  }) {
     Future<void> _alertDialogBuilder() async {
       return showDialog(
         barrierDismissible: false,
@@ -9,14 +21,18 @@ class AlertUtils {
         builder: (context) {
           return AlertDialog(
             title: Text(title),
-            content: Text(message),
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Text(message),
+            ),
+            shape: _roundedShape,
             actions: [
               TextButton(
                 onPressed: () {
                   onClick?.call();
                   Navigator.pop(context);
                 },
-                child: Text(positiveButtonText),
+                child: Text(positiveText),
               )
             ],
           );
@@ -27,7 +43,14 @@ class AlertUtils {
     _alertDialogBuilder();
   }
 
-  static void showCancelDialog(context, title, message, positiveButtonText, {Function? onClick}) {
+  static void showCancelDialog(
+    context, {
+    String title = 'App Alert',
+    required String message,
+    String negLabel = 'Cancel',
+    String positiveLabel = 'Ok',
+    Function? onClick,
+  }) {
     Future<void> _alertDialogBuilder() async {
       return showDialog(
         barrierDismissible: false,
@@ -35,20 +58,24 @@ class AlertUtils {
         builder: (context) {
           return AlertDialog(
             title: Text(title),
-            content: Text(message),
+            content: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Text(message),
+            ),
+            shape: _roundedShape,
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Cancel'),
+                child: Text(negLabel),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   onClick?.call();
                 },
-                child: Text(positiveButtonText),
+                child: Text(positiveLabel),
               )
             ],
           );
@@ -72,6 +99,7 @@ class AlertUtils {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
+          shape: _roundedShape,
           child: Padding(
             padding: const EdgeInsets.all(30),
             child: Row(

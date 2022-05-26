@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:salespoint_flutter/common/custom_button.dart';
 import 'package:salespoint_flutter/data/app_api.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/extensions/string_ext.dart';
@@ -8,9 +9,7 @@ import 'package:salespoint_flutter/models/create_bill_share_data.dart';
 import 'package:salespoint_flutter/models/request/add_student_request.dart';
 import 'package:salespoint_flutter/models/response/add_student_response.dart';
 import 'package:salespoint_flutter/utils/alert_utils.dart';
-
-import '../../common/custom_button.dart';
-import '../../utils/response_handler.dart';
+import 'package:salespoint_flutter/utils/response_handler.dart';
 
 class AddStudentPage extends StatelessWidget {
   AddStudentPage({
@@ -53,17 +52,14 @@ class AddStudentPage extends StatelessWidget {
         _formKey.currentState?.reset();
         AlertUtils.showAlertDialog(
           context,
-          'Student Added',
-          'Student added successfully into the system',
-          'Ok',
-          onClick: () {},
+          title: 'Student Added',
+          message: 'Student added successfully into the system',
         );
       } else {
         AlertUtils.showAlertDialog(
           context,
-          'Error',
-          result.errorMessage,
-          'Ok',
+          title: 'Error',
+          message: result.errorMessage ?? 'Something went wrong!',
         );
       }
     }

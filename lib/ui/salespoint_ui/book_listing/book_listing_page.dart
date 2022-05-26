@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:salespoint_flutter/common/clickables.dart';
+import 'package:salespoint_flutter/models/response/items_list_response.dart';
 import 'package:salespoint_flutter/theme/colors.dart';
+import 'package:salespoint_flutter/theme/styles.dart';
+import 'package:salespoint_flutter/theme/typography.dart';
+import 'package:salespoint_flutter/utils/alert_utils.dart';
 
-import '../../common/clickables.dart';
-import '../../models/response/items_list_response.dart';
-import '../../theme/styles.dart';
-import '../../theme/typography.dart';
-import '../../utils/alert_utils.dart';
 import '../dashboard/dashboard_controller.dart';
 
 class BookListingPage extends StatelessWidget {
@@ -64,14 +64,10 @@ class BookListingPage extends StatelessWidget {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      controller.selectedItems.length == controller.items?.length
-                                          ? controller.cancel()
-                                          : controller.onSelectAll();
+                                      controller.selectedItems.length == controller.items?.length ? controller.cancel() : controller.onSelectAll();
                                     },
                                     child: Icon(
-                                      controller.selectedItems.length == controller.items?.length
-                                          ? Icons.radio_button_checked
-                                          : Icons.radio_button_off,
+                                      controller.selectedItems.length == controller.items?.length ? Icons.radio_button_checked : Icons.radio_button_off,
                                       color: AppColors.primaryColor,
                                     ),
                                   ),
@@ -102,7 +98,11 @@ class BookListingPage extends StatelessWidget {
                                         Fluttertoast.showToast(msg: 'Items returned.');
                                         await controller.getItems();
                                       } else {
-                                        AlertUtils.showAlertDialog(context, 'Error', error, 'Ok');
+                                        AlertUtils.showAlertDialog(
+                                          context,
+                                          title: 'Error',
+                                          message: error,
+                                        );
                                       }
                                     },
                                     child: const Text(
@@ -220,10 +220,19 @@ class _ListItem extends StatelessWidget {
               ),
               Card(
                 child: Image.network(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoCBdaTqCENdnS8TlC-sS-bsXWlWs7o1asyw&usqp=CAU',
+                  data.featuredImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoCBdaTqCENdnS8TlC-sS-bsXWlWs7o1asyw&usqp=CAU',
                   width: 110,
                   height: 160,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const SizedBox(
+                      width: 110,
+                      height: 160,
+                      child: Center(
+                        child: Icon(Icons.error, color: Colors.red),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

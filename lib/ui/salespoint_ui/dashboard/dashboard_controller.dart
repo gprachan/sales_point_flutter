@@ -2,18 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:salespoint_flutter/api/api_provider.dart';
 import 'package:salespoint_flutter/api/response_wrapper.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
+import 'package:salespoint_flutter/data/app_api.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/models/request/return_items_request.dart';
+import 'package:salespoint_flutter/models/response/item_listing_by_school_response.dart';
 import 'package:salespoint_flutter/models/response/items_list_response.dart';
 import 'package:salespoint_flutter/models/response/return_items_response.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
+import 'package:salespoint_flutter/utils/response_handler.dart';
 
-import '../../api/api_provider.dart';
-import '../../data/app_api.dart';
-import '../../models/response/item_listing_by_school_response.dart';
-import '../../utils/response_handler.dart';
 
 class DashboardController extends ChangeNotifier {
   final _prefs = getIt<Prefs>();
@@ -107,7 +107,6 @@ class DashboardController extends ChangeNotifier {
       jsonEncode(request),
     );
     if (response.status == ResponseWrapper.COMPLETED) {
-      loggerE('Here');
       ReturnItemsResponse? data = ReturnItemsResponse.fromJson(response.data);
       _selectedItems.clear();
       _selectedItems = _selectedItems;

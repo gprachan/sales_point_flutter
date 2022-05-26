@@ -1,17 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salespoint_flutter/models/create_bill_share_data.dart';
-import 'package:salespoint_flutter/models/response/items_list_response.dart';
-import 'package:salespoint_flutter/ui/add_student/add_student_page.dart';
-import 'package:salespoint_flutter/ui/book_listing/book_listing_page.dart';
-import 'package:salespoint_flutter/ui/dashboard/dashboard_controller.dart';
-import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
-import 'package:salespoint_flutter/ui/login/login_page.dart';
-import 'package:salespoint_flutter/ui/school/school_controller.dart';
-import 'package:salespoint_flutter/ui/student/item_listing_view.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/add_student/add_student_page.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_controller.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_page.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/login/login_page.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/school/school_controller.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/student/item_listing_view.dart';
 
-import '../ui/student/student_listing_page.dart';
+import '../ui/salespoint_ui/student/student_listing_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

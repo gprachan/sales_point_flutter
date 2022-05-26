@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:salespoint_flutter/models/create_bill_share_data.dart';
 import 'package:salespoint_flutter/models/response/school_listing_response.dart';
 import 'package:salespoint_flutter/theme/colors.dart';
-import 'package:salespoint_flutter/ui/school/school_controller.dart';
-import 'package:salespoint_flutter/ui/student/student_listing_page.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/school/school_controller.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/student/student_listing_page.dart';
 
 class SchoolListingPage extends StatelessWidget {
   const SchoolListingPage({Key? key}) : super(key: key);

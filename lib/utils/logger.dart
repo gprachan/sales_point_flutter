@@ -5,7 +5,7 @@ import '../di/get_it.dart';
 
 Logger get logger => getIt<Logger>();
 
-bool get loggerEnabled => ApiProvider.showLog();
+bool get loggerEnabled => ApiProvider.isDebug();
 
 void loggerD(dynamic message, [dynamic error, StackTrace? stackTrace]) {
   if (loggerEnabled) logger.d(message, error, stackTrace);

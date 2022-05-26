@@ -10,7 +10,7 @@ void main() async {
 
   setupGetIt(
     await SharedPreferences.getInstance(),
-    showAlice: ApiProvider.showLog(),
+    showAlice: ApiProvider.isDebug(),
   );
 
   runApp(MyApp());

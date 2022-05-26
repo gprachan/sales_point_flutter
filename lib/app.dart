@@ -4,8 +4,9 @@ import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/routes/route_generator.dart';
 import 'package:salespoint_flutter/service/navigation_service.dart';
 import 'package:salespoint_flutter/theme/colors.dart';
-import 'package:salespoint_flutter/ui/dashboard/dashboard_page.dart';
-import 'package:salespoint_flutter/ui/login/login_page.dart';
+
+import 'ui/salespoint_ui/dashboard/dashboard_page.dart';
+import 'ui/salespoint_ui/login/login_page.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);

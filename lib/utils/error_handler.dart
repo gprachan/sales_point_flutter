@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/login/login_page.dart';
 
 import '../data/Prefs.dart';
 import '../di/get_it.dart';
 import '../models/error_response.dart';
 import '../service/navigation_service.dart';
-import '../ui/login/login_page.dart';
 import 'logger.dart';
 
 part 'error_handler.g.dart';
