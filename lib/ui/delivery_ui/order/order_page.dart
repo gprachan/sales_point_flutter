@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salespoint_flutter/common/clickables.dart';
+import 'package:salespoint_flutter/common/custom_button.dart';
 import 'package:salespoint_flutter/theme/typography.dart';
 
 class OrderPage extends StatelessWidget {
@@ -32,26 +33,41 @@ class OrderPage extends StatelessWidget {
     );
   }
 
-  void showBottomSheet(BuildContext context) {
+  void showBottomSheet(BuildContext buildContext) {
+    final description = TextEditingController();
     showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            padding: const EdgeInsets.all(24),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Update Order",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-
-                ],
+      context: buildContext,
+      isScrollControlled: true,
+      builder: (context) {
+        return Container(
+          margin: MediaQuery.of(context).viewInsets,
+          padding: const EdgeInsets.all(24),
+          child: Wrap(
+            runSpacing: 24,
+            children: [
+              const Text(
+                "Update Order",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-          );
-        });
+              TextField(
+                controller: description,
+                maxLines: 5,
+                decoration: const InputDecoration(
+                  labelText: "Write short description",
+                  alignLabelWithHint: true,
+                ),
+              ),
+              CustomButton(
+                onClick: () {
+                  Navigator.pop(context);
+                },
+                label: "UPDATE STATUS",
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
