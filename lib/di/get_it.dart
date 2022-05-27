@@ -6,6 +6,7 @@ import 'package:salespoint_flutter/api/api_provider.dart';
 import 'package:salespoint_flutter/api/config.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/data/app_api.dart';
+import 'package:salespoint_flutter/data/helper_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service/navigation_service.dart';
@@ -21,10 +22,8 @@ void setupGetIt(SharedPreferences sharedPreferences, {required bool showAlice}) 
 
   getIt.registerLazySingleton(() => NavigationService());
 
-  getIt.registerFactory<AppApiClient>(() => AppApiClient(
-        getIt<Dio>(),
-        baseUrl: ApiProvider.baseUrl,
-      ));
+  getIt.registerFactory<AppApiClient>(() => AppApiClient(getIt<Dio>(), baseUrl: ApiProvider.baseUrl));
+  getIt.registerFactory<HelperApiClient>(() => HelperApiClient(getIt<Dio>(), baseUrl: ApiProvider.baseUrl));
 }
 
 Alice getAlice() => Alice(
