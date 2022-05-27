@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salespoint_flutter/models/create_bill_share_data.dart';
+import 'package:salespoint_flutter/ui/delivery_ui/dashboard/delivery_dashboard_page.dart';
+import 'package:salespoint_flutter/ui/delivery_ui/order/order_page.dart';
 import 'package:salespoint_flutter/ui/salespoint_ui/add_student/add_student_page.dart';
 import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_controller.dart';
 import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_page.dart';
@@ -55,6 +57,12 @@ class RouteGenerator {
               ],
               child: ItemListingView(data: data),
             );
+
+          /// NOTE: Delivery UI
+          case DeliveryDashboardPage.routeName:
+            return const DeliveryDashboardPage();
+          case OrderPage.routeName:
+            return const OrderPage();
           default:
             return ChangeNotifierProvider(
               create: (_) => DashboardController(),

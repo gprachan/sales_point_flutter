@@ -4,6 +4,8 @@ import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/routes/route_generator.dart';
 import 'package:salespoint_flutter/service/navigation_service.dart';
 import 'package:salespoint_flutter/theme/colors.dart';
+import 'package:salespoint_flutter/ui/delivery_ui/dashboard/delivery_dashboard_page.dart';
+import 'package:salespoint_flutter/ui/delivery_ui/order/order_page.dart';
 
 import 'ui/salespoint_ui/dashboard/dashboard_page.dart';
 import 'ui/salespoint_ui/login/login_page.dart';
@@ -14,6 +16,8 @@ class MyApp extends StatelessWidget {
   final _prefs = getIt<Prefs>();
 
   String _initialRoute() {
+    return OrderPage.routeName;
+    // todo(gprachan) change it later after adding delivery
     if (_prefs.accessToken.isEmpty) {
       return LoginPage.routeName;
     } else {
@@ -37,6 +41,11 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
             fontSize: 18.0,
             fontWeight: FontWeight.w500,
+          ),
+        ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
           ),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: AppColors.primaryColor),

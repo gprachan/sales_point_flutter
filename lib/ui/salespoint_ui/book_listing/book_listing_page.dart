@@ -212,7 +212,7 @@ class _ListItem extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       children: const [
-                        ClickableText(label: 'Return Book', onClick: null),
+                        ClickableText(label: 'Return Book'),
                       ],
                     ),
                   ],

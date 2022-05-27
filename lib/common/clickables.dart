@@ -5,7 +5,7 @@ class ClickableText extends StatelessWidget {
     Key? key,
     required this.label,
     this.color = Colors.green,
-    required this.onClick,
+    this.onClick,
   }) : super(key: key);
 
   final String label;
