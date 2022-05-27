@@ -4,7 +4,8 @@ import 'error_handler.dart';
 import 'logger.dart';
 
 Future<BaseResponse<T>> doTryCatch<T>(
-    Future<BaseResponse<T>> Function() task) async {
+  Future<BaseResponse<T>> Function() task,
+) async {
   try {
     return await task();
   } on Exception catch (ex, stacktrace) {
@@ -33,7 +34,6 @@ extension HandleResponse<T> on HttpResponse<T> {
   }
 }
 
-
 /// Reference: https://medium.com/globant/easy-way-to-implement-rest-api-calls-in-flutter-9859d1ab5396
 class BaseResponse<T> {
   ApiError? _error;
@@ -43,8 +43,10 @@ class BaseResponse<T> {
   //bool hasError() => _error != null;
 
   ApiError? get error => _error;
+
   String? get errorMessage => _error?.message;
-  Map<String,List<String>?>? get errors => _error?.errors;
+
+  Map<String, List<String>?>? get errors => _error?.errors;
 
   setError(ApiError? error) {
     _error = error;
@@ -54,7 +56,7 @@ class BaseResponse<T> {
     this.data = data;
   }
 
-  toLoggerE(Map<String,dynamic>? data){
+  toLoggerE(Map<String, dynamic>? data) {
     loggerE("""
     result=${toString()}
     data=$data

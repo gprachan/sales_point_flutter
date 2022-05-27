@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salespoint_flutter/models/create_bill_share_data.dart';
 import 'package:salespoint_flutter/ui/delivery_ui/dashboard/delivery_dashboard_page.dart';
+import 'package:salespoint_flutter/ui/delivery_ui/delivery_controller.dart';
 import 'package:salespoint_flutter/ui/delivery_ui/order/order_page.dart';
 import 'package:salespoint_flutter/ui/salespoint_ui/add_student/add_student_page.dart';
 import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_controller.dart';
@@ -9,6 +10,7 @@ import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_page.dar
 import 'package:salespoint_flutter/ui/salespoint_ui/login/login_page.dart';
 import 'package:salespoint_flutter/ui/salespoint_ui/school/school_controller.dart';
 import 'package:salespoint_flutter/ui/salespoint_ui/student/item_listing_view.dart';
+import 'package:salespoint_flutter/utils/logger.dart';
 
 import '../ui/salespoint_ui/student/student_listing_page.dart';
 
@@ -62,7 +64,10 @@ class RouteGenerator {
           case DeliveryDashboardPage.routeName:
             return const DeliveryDashboardPage();
           case OrderPage.routeName:
-            return const OrderPage();
+            return ChangeNotifierProvider(
+              create: (_) => DeliveryController()..getOrders(),
+              child: const OrderPage(),
+            );
           default:
             return ChangeNotifierProvider(
               create: (_) => DashboardController(),

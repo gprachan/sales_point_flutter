@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:salespoint_flutter/common/clickables.dart';
 import 'package:salespoint_flutter/common/custom_button.dart';
+import 'package:salespoint_flutter/routes/route_generator.dart';
 import 'package:salespoint_flutter/theme/typography.dart';
+import 'package:salespoint_flutter/ui/delivery_ui/delivery_controller.dart';
 
 class OrderPage extends StatelessWidget {
   const OrderPage({Key? key}) : super(key: key);
@@ -14,22 +17,29 @@ class OrderPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Order Listing'),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {},
-        child: ListView.separated(
-          itemBuilder: (context, index) {
-            return _OrderItem(
-              onShowBottomSheet: (value) {
-                showBottomSheet(context);
+      body: Consumer<DeliveryController>(builder: (context, controller, child) {
+        if (controller.error != null) {
+          return RefreshIndicator(
+            onRefresh: () async {},
+            child: ListView.separated(
+              itemBuilder: (context, index) {
+                return _OrderItem(
+                  onShowBottomSheet: (value) {
+                    showBottomSheet(context);
+                  },
+                );
               },
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(height: 8);
-          },
-          itemCount: 12,
-        ),
-      ),
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 8);
+              },
+              itemCount: 12,
+            ),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator.adaptive(),
+        );
+      }),
     );
   }
 
