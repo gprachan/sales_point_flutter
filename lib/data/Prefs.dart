@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:salespoint_flutter/models/response/login_response.dart';
+import 'package:salespoint_flutter/models/response/order_status_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../di/get_it.dart';
@@ -10,6 +11,7 @@ class Prefs {
 
   static const String _keyAccessToken = 'keyAccessToken';
   static const String _keyLoginData = 'keyLoginData';
+  static const String _keyStatus = 'keyStatus';
 
   String get accessToken => _prefs.getString(_keyAccessToken) ?? "";
 

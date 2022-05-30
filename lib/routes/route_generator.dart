@@ -65,7 +65,7 @@ class RouteGenerator {
             return const DeliveryDashboardPage();
           case OrderPage.routeName:
             return ChangeNotifierProvider(
-              create: (_) => DeliveryController()..getOrders(),
+              create: (_) => DeliveryController()..getStatusListing(),
               child: const OrderPage(),
             );
           default:

@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:salespoint_flutter/data/helper_api.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
+import 'package:salespoint_flutter/models/request/update_order_status_request.dart';
 import 'package:salespoint_flutter/models/response/common_response.dart';
 import 'package:salespoint_flutter/models/response/deliver_dashboard_summary_response.dart';
 import 'package:salespoint_flutter/models/response/order_listing_response.dart';
+import 'package:salespoint_flutter/models/response/order_status_response.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
 import 'package:salespoint_flutter/utils/response_handler.dart';
 
@@ -14,6 +16,24 @@ class DeliveryController extends ChangeNotifier {
   String? _error;
 
   String? get error => _error;
+
+  List<OrderStatusResponse>? _orderStatus;
+
+  String? getStatus(int? status) {
+    if (status == null || _orderStatus?.isEmpty == true) {
+      return 'Undefined';
+    }
+    return _orderStatus?.firstWhere((element) => element.id == status).name;
+  }
+
+  Future<void> getStatusListing() async {
+    BaseResponse<List<OrderStatusResponse>> result = await doTryCatch(() async {
+      HttpResponse<List<OrderStatusResponse>> response = await _apiClient.getOrderStatus();
+      return response.handleResponse();
+    });
+    _orderStatus = result.data;
+    getOrders();
+  }
 
   List<OrderListingResponse>? _orders;
 
@@ -40,9 +60,9 @@ class DeliveryController extends ChangeNotifier {
   }
 
   // Update order status by delivery boy
-  Future<String?> updateOrderState() async {
+  Future<String?> updateOrderState(int? orderId, UpdateOrderStatusRequest request) async {
     BaseResponse<CommonResponse> result = await doTryCatch(() async {
-      HttpResponse<CommonResponse> response = await _apiClient.updateOrderStatus(orderId: 0);
+      HttpResponse<CommonResponse> response = await _apiClient.updateOrderStatus(orderId: orderId, request: request);
       return response.handleResponse();
     });
     return result.errorMessage;

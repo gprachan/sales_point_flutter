@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:salespoint_flutter/common/clickables.dart';
 import 'package:salespoint_flutter/common/custom_button.dart';
+import 'package:salespoint_flutter/models/request/update_order_status_request.dart';
 import 'package:salespoint_flutter/models/response/order_listing_response.dart';
 import 'package:salespoint_flutter/theme/typography.dart';
 import 'package:salespoint_flutter/ui/delivery_ui/delivery_controller.dart';
+import 'package:salespoint_flutter/utils/alert_utils.dart';
 import 'package:salespoint_flutter/utils/date_parser.dart';
 
 class OrderPage extends StatelessWidget {
@@ -28,8 +31,15 @@ class OrderPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return _OrderItem(
                   item: controller.orders[index],
+                  controller: controller,
                   onShowBottomSheet: (value) {
-                    showBottomSheet(context);
+                    showBottomSheet(
+                      value,
+                      context,
+                      () {
+                        controller.getOrders();
+                      },
+                    );
                   },
                 );
               },
@@ -59,7 +69,11 @@ class OrderPage extends StatelessWidget {
     );
   }
 
-  void showBottomSheet(BuildContext buildContext) {
+  void showBottomSheet(
+    int? orderId,
+    BuildContext buildContext,
+    Function onDismiss,
+  ) {
     final description = TextEditingController();
     showModalBottomSheet(
       context: buildContext,
@@ -77,15 +91,29 @@ class OrderPage extends StatelessWidget {
               ),
               TextField(
                 controller: description,
-                maxLines: 5,
+                maxLines: 3,
                 decoration: const InputDecoration(
                   labelText: "Write short description",
                   alignLabelWithHint: true,
                 ),
               ),
               CustomButton(
-                onClick: () {
-                  Navigator.pop(context);
+                onClick: () async {
+                  if (description.text.isNotEmpty) {
+                    AlertUtils.showProgressDialog(context);
+                    UpdateOrderStatusRequest request = UpdateOrderStatusRequest(shortNote: description.text);
+                    String? error = await Provider.of<DeliveryController>(buildContext, listen: false).updateOrderState(orderId, request);
+                    Navigator.pop(context);
+                    if (error == null) {
+                      onDismiss();
+                      Navigator.pop(context);
+                      Fluttertoast.showToast(msg: 'Status Update');
+                    } else {
+                      Fluttertoast.showToast(msg: error);
+                    }
+                  } else {
+                    Fluttertoast.showToast(msg: 'Write short note to continue!');
+                  }
                 },
                 label: "UPDATE STATUS",
               ),
@@ -97,16 +125,18 @@ class OrderPage extends StatelessWidget {
   }
 }
 
-typedef OnShowBottomSheet = Function(String? data)?;
+typedef OnShowBottomSheet = Function(int? id)?;
 
 class _OrderItem extends StatelessWidget {
   const _OrderItem({
     Key? key,
     this.onShowBottomSheet,
+    required this.controller,
     required this.item,
   }) : super(key: key);
 
   final OrderListingResponse item;
+  final DeliveryController controller;
   final OnShowBottomSheet onShowBottomSheet;
 
   @override
@@ -129,13 +159,10 @@ class _OrderItem extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 4),
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(16)),
+                    decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(16)),
                     child: Text(
-                      '${item.statusId}',
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.white,
-                      ),
+                      '${controller.getStatus(item.statusId)}',
+                      style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -160,7 +187,7 @@ class _OrderItem extends StatelessWidget {
                       ClickableText(
                         label: 'Update Status',
                         onClick: () {
-                          onShowBottomSheet?.call("Data");
+                          onShowBottomSheet?.call(item.id);
                         },
                       ),
                     ],
