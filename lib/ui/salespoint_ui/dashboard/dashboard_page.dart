@@ -55,7 +55,12 @@ class DashboardPage extends StatelessWidget {
 }
 
 class PopupMenuActions extends StatelessWidget {
-  const PopupMenuActions({Key? key}) : super(key: key);
+  const PopupMenuActions({
+    Key? key,
+    this.onProfileTap,
+  }) : super(key: key);
+
+  final Function? onProfileTap;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +72,9 @@ class PopupMenuActions extends StatelessWidget {
             return PopupMenuItem(
               child: index == 0
                   ? ListTile(
+                      onTap: () {
+                        onProfileTap?.call();
+                      },
                       title: Text("${getIt<Prefs>().loginData?.user?.name}"),
                       subtitle: Text("${getIt<Prefs>().loginData?.user?.email}"),
                     )

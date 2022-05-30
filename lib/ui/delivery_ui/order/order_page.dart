@@ -7,6 +7,7 @@ import 'package:salespoint_flutter/models/request/update_order_status_request.da
 import 'package:salespoint_flutter/models/response/order_listing_response.dart';
 import 'package:salespoint_flutter/theme/typography.dart';
 import 'package:salespoint_flutter/ui/delivery_ui/delivery_controller.dart';
+import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_page.dart';
 import 'package:salespoint_flutter/utils/alert_utils.dart';
 import 'package:salespoint_flutter/utils/date_parser.dart';
 
@@ -20,6 +21,9 @@ class OrderPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Listing'),
+        actions: const [
+          PopupMenuActions(),
+        ],
       ),
       body: Consumer<DeliveryController>(builder: (context, controller, child) {
         if (controller.orders.isNotEmpty) {
