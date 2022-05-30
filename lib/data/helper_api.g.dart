@@ -18,19 +18,20 @@ class _HelperApiClient implements HelperApiClient {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<List<CommonResponse>>> getOrders() async {
+  Future<HttpResponse<List<OrderListingResponse>>> getOrders() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<HttpResponse<List<CommonResponse>>>(
+        _setStreamType<HttpResponse<List<OrderListingResponse>>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, 'api/delivery-person-orders',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
-        .map((dynamic i) => CommonResponse.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) =>
+            OrderListingResponse.fromJson(i as Map<String, dynamic>))
         .toList();
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
@@ -50,6 +51,24 @@ class _HelperApiClient implements HelperApiClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CommonResponse.fromJson(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<DeliverDashboardSummaryResponse>>
+      getDashboardSummary() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<DeliverDashboardSummaryResponse>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'api/dashboard/summary',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DeliverDashboardSummaryResponse.fromJson(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

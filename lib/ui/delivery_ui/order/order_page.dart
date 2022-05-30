@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salespoint_flutter/common/clickables.dart';
 import 'package:salespoint_flutter/common/custom_button.dart';
-import 'package:salespoint_flutter/routes/route_generator.dart';
+import 'package:salespoint_flutter/models/response/order_listing_response.dart';
 import 'package:salespoint_flutter/theme/typography.dart';
 import 'package:salespoint_flutter/ui/delivery_ui/delivery_controller.dart';
+import 'package:salespoint_flutter/utils/date_parser.dart';
 
 class OrderPage extends StatelessWidget {
   const OrderPage({Key? key}) : super(key: key);
@@ -18,12 +19,15 @@ class OrderPage extends StatelessWidget {
         title: const Text('Order Listing'),
       ),
       body: Consumer<DeliveryController>(builder: (context, controller, child) {
-        if (controller.error != null) {
+        if (controller.orders.isNotEmpty) {
           return RefreshIndicator(
-            onRefresh: () async {},
+            onRefresh: () async {
+              controller.getOrders();
+            },
             child: ListView.separated(
               itemBuilder: (context, index) {
                 return _OrderItem(
+                  item: controller.orders[index],
                   onShowBottomSheet: (value) {
                     showBottomSheet(context);
                   },
@@ -32,7 +36,19 @@ class OrderPage extends StatelessWidget {
               separatorBuilder: (context, index) {
                 return const SizedBox(height: 8);
               },
-              itemCount: 12,
+              itemCount: controller.orders.length,
+            ),
+          );
+        }
+        if (controller.error != null) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                controller.error!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.red),
+              ),
             ),
           );
         }
@@ -87,8 +103,10 @@ class _OrderItem extends StatelessWidget {
   const _OrderItem({
     Key? key,
     this.onShowBottomSheet,
+    required this.item,
   }) : super(key: key);
 
+  final OrderListingResponse item;
   final OnShowBottomSheet onShowBottomSheet;
 
   @override
@@ -105,16 +123,16 @@ class _OrderItem extends StatelessWidget {
                 children: [
                   const SizedBox(height: 20),
                   Text(
-                    'Book name',
+                    item.fullName ?? 'No Name',
                     style: AppTypography.titleStyle.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 4),
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(16)),
-                    child: const Text(
-                      'STATUS',
-                      style: TextStyle(
+                    child: Text(
+                      '${item.statusId}',
+                      style: const TextStyle(
                         fontSize: 10,
                         color: Colors.white,
                       ),
@@ -122,7 +140,7 @@ class _OrderItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Available Books: 123',
+                    'Total Amount: Rs. ${item.totalAmount}',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
@@ -130,7 +148,7 @@ class _OrderItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Type: Location',
+                    'Order Date: ${DateParser.formatDate(item.orderDate)}',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.grey,

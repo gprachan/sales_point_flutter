@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salespoint_flutter/AppConstants.dart';
 import 'package:salespoint_flutter/data/Prefs.dart';
 import 'package:salespoint_flutter/di/get_it.dart';
 import 'package:salespoint_flutter/routes/route_generator.dart';
@@ -16,10 +17,10 @@ class MyApp extends StatelessWidget {
   final _prefs = getIt<Prefs>();
 
   String _initialRoute() {
-    return OrderPage.routeName;
-    // todo(gprachan) change it later after adding delivery
     if (_prefs.accessToken.isEmpty) {
       return LoginPage.routeName;
+    } else if (_prefs.accessToken.isNotEmpty && _prefs.loginData?.user?.type == AppConstants.deliveryUser) {
+      return OrderPage.routeName;
     } else {
       return DashboardPage.routeName;
     }

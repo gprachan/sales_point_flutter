@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:salespoint_flutter/AppConstants.dart';
 import 'package:salespoint_flutter/api/api_provider.dart';
 import 'package:salespoint_flutter/api/response_wrapper.dart';
 import 'package:salespoint_flutter/common/custom_button.dart';
@@ -12,6 +13,7 @@ import 'package:salespoint_flutter/models/request/login_request.dart';
 import 'package:salespoint_flutter/models/response/login_response.dart';
 import 'package:salespoint_flutter/theme/assets.dart';
 import 'package:salespoint_flutter/theme/colors.dart';
+import 'package:salespoint_flutter/ui/delivery_ui/order/order_page.dart';
 import 'package:salespoint_flutter/ui/salespoint_ui/dashboard/dashboard_page.dart';
 import 'package:salespoint_flutter/utils/alert_utils.dart';
 import 'package:salespoint_flutter/utils/logger.dart';
@@ -48,10 +50,15 @@ class _LoginPageState extends State<LoginPage> {
       if (response.status == ResponseWrapper.COMPLETED) {
         Navigator.pop(context);
         LoginResponse? loginResponse = LoginResponse.fromJson(response.data);
-        _prefs.accessToken = loginResponse.accessToken;
         loggerE("Prefs Token ${_prefs.accessToken}\nResponse Token ${loginResponse.accessToken}");
+
+        _prefs.accessToken = loginResponse.accessToken;
         _prefs.loginData = loginResponse;
-        Navigator.pushReplacementNamed(context, DashboardPage.routeName);
+        if (loginResponse.user?.type == AppConstants.deliveryUser) {
+          Navigator.pushReplacementNamed(context, OrderPage.routeName);
+        } else {
+          Navigator.pushReplacementNamed(context, DashboardPage.routeName);
+        }
       } else {
         Navigator.pop(context);
         AlertUtils.showSnackBar(

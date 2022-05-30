@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:salespoint_flutter/api/api_provider.dart';
 import 'package:salespoint_flutter/models/response/common_response.dart';
-import 'package:salespoint_flutter/models/response/school_listing_response.dart';
+import 'package:salespoint_flutter/models/response/deliver_dashboard_summary_response.dart';
+import 'package:salespoint_flutter/models/response/order_listing_response.dart';
 
 part 'helper_api.g.dart';
 
@@ -15,10 +16,14 @@ abstract class HelperApiClient {
 
   static const String _orderListingApi = "$_basePath/delivery-person-orders";
   static const String _updateOrderApi = "$_basePath/delivery-person-status/{orderId}";
+  static const String _dashboardSummaryApi = "$_basePath/dashboard/summary";
 
   @GET(_orderListingApi)
-  Future<HttpResponse<List<CommonResponse>>> getOrders();
+  Future<HttpResponse<List<OrderListingResponse>>> getOrders();
 
   @POST(_updateOrderApi)
   Future<HttpResponse<CommonResponse>> updateOrderStatus({@Path('orderId') int? orderId});
+
+  @GET(_dashboardSummaryApi)
+  Future<HttpResponse<DeliverDashboardSummaryResponse>> getDashboardSummary();
 }
